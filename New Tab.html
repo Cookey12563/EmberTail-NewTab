@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>New Tab</title>
+
+  <link
+  rel="icon"
+  type="image/png"
+  sizes="512x512"
+  href="EMBERTAILFAV.PNG"
+  >
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+  >
+
+  <style>
+    /* Base */
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #fff3df;
+      font-family: "Comic Sans MS", cursive;
+      background-color: #17191b;
+      background-image:
+        url("background.png"),
+        radial-gradient(
+          circle at 18% 10%,
+          rgba(231, 122, 50, 0.19),
+          transparent 25rem
+        ),
+        radial-gradient(
+          circle at 82% 88%,
+          rgba(81, 107, 69, 0.24),
+          transparent 29rem
+        ),
+        linear-gradient(135deg, #34383c, #25282b 47%, #17191b);
+      background-size: cover, auto, auto, auto;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button:focus-visible,
+    a:focus-visible {
+      outline: 3px solid #f5c95f;
+      outline-offset: 4px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    /* Header and nine-dot launcher */
+    header {
+      position: absolute;
+      right: 24px;
+      top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      z-index: 5;
+    }
+
+    .waffle {
+      width: 52px;
+      height: 52px;
+      border: 2px solid #e77a32;
+      border-radius: 50%;
+      background: #2d3033;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 0 #6e3d24;
+    }
+
+    .dots {
+      display: grid;
+      grid-template-columns: repeat(3, 5px);
+      gap: 4px;
+    }
+
+    .dots i {
+      background: #fff3df;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    /* Main card */
+    main {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 110px 24px 80px;
+    }
+
+    .home {
+      width: min(710px, 100%);
+      padding: 40px 30px 30px;
+      text-align: center;
+      background: #2d3033ed;
+      border: 4px solid #e77a32;
+      border-radius: 27px;
+      box-shadow:
+        0 20px 56px #0007,
+        0 0 0 8px #f5c95f24;
+    }
+
+    h1 {
+      font-family: "Permanent Marker", cursive;
+      font-weight: 400;
+      font-size: clamp(42px, 9vw, 76px);
+      line-height: 1.15;
+      margin: 0 0 30px;
+      text-shadow: 3px 4px 0 #6e3d24;
+    }
+
+    /* Search */
+    form {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 2px solid #ffab5c;
+      border-radius: 999px;
+      background: #202225;
+      padding: 7px 9px 7px 20px;
+      box-shadow: 0 5px 0 #6e3d24;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 12px 0;
+      border: 0;
+      outline: none;
+      background: transparent;
+      color: #fff3df;
+      font-size: 16px;
+    }
+
+    form:focus-within {
+      outline: 2px solid #f5c95f;
+    }
+
+    input::placeholder {
+      color: #c7beb1;
+    }
+
+    .submit {
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 50%;
+      background: #ffab5c;
+      color: #27211c;
+      font-size: 24px;
+    }
+
+    /* App tiles */
+    .favorites {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 28px;
+    }
+
+    .tile {
+      border-radius: 14px;
+      padding: 10px 3px;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .tile:hover {
+      background: #fff3df14;
+    }
+
+    .tile a {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      align-items: center;
+    }
+
+    .icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border: 2px solid #fff3df30;
+      border-radius: 15px;
+      background: #202225;
+      font: 26px Arial;
+    }
+
+    /* App panel */
+    .panel {
+      position: absolute;
+      right: 0;
+      top: 66px;
+      width: min(360px, calc(100vw - 32px));
+      max-height: calc(100vh - 110px);
+      overflow: auto;
+      background: #2d3033;
+      border: 3px solid #e77a32;
+      border-radius: 23px;
+      padding: 18px;
+      box-shadow: 0 12px 40px #0009;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel h2 {
+      font-size: 19px;
+      margin: 0;
+    }
+
+    .small,
+    .moves button {
+      background: #202225;
+      color: #fff3df;
+      border: 1px solid #ffab5c;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    .hint,
+    .status {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #c7beb1;
+    }
+
+    .status {
+      color: #f5c95f;
+    }
+
+    .apps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    /* Arrange mode */
+    .moves {
+      display: none;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .editing .moves {
+      display: flex;
+    }
+
+    .editing .tile {
+      border: 1px dashed #ffab5c80;
+      touch-action: none;
+      cursor: grab;
+    }
+
+    .editing .tile a {
+      pointer-events: none;
+    }
+
+    .dragging {
+      opacity: 0.4;
+    }
+
+    .over {
+      background: #f5c95f33 !important;
+    }
+
+    /* Footer and mobile */
+    footer {
+      position: fixed;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      color: #f5c95f;
+      pointer-events: none;
+      text-shadow: 0 2px 5px #000;
+    }
+
+    @media (max-width: 650px) {
+      .home {
+        padding: 35px 18px 24px;
+      }
+
+      footer {
+        font-size: 12px;
+      }
+
+      header {
+        right: 16px;
+        gap: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="https://mail.google.com/">Gmail</a>
+    <a href="https://www.google.com/imghp">Images</a>
+
+    <button
+      id="waffle"
+      class="waffle"
+      aria-label="Google apps"
+      aria-expanded="false"
+      aria-controls="panel"
+    >
+      <span class="dots" aria-hidden="true">
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+    </button>
+
+    <section
+      id="panel"
+      class="panel"
+      aria-label="Google apps launcher"
+      hidden
+    >
+      <div class="panel-head">
+        <h2>Google apps</h2>
+        <button id="arrange" class="small" aria-pressed="false">
+          Arrange
+        </button>
+      </div>
+
+      <p class="hint">
+        Choose Arrange to drag apps or move them with the arrows.
+        Your first four appear below search.
+      </p>
+
+      <div id="apps" class="apps"></div>
+      <p id="status" class="status" role="status"></p>
+
+      <button id="reset" class="small">Reset order</button>
+    </section>
+  </header>
+
+  <main>
+    <section class="home">
+      <h1>Ember Tail</h1>
+
+      <form
+        id="search"
+        action="https://www.google.com/search"
+        method="get"
+        role="search"
+      >
+        <span aria-hidden="true">🔎</span>
+
+        <input
+          id="q"
+          name="q"
+          type="search"
+          placeholder="Search Ember Tail"
+          aria-label="Search Ember Tail"
+          required
+          autocomplete="off"
+        >
+
+        <button class="submit" aria-label="Search" type="submit">
+          ➜
+        </button>
+      </form>
+
+      <nav
+        id="favorites"
+        class="favorites"
+        aria-label="Favorite apps"
+      ></nav>
+    </section>
+  </main>
+
+  <footer>
+    🌿 🍄 ✦ Search the web with foxes ✦ 🍂 🐾
+  </footer>
+
+  <script>
+    // Default apps and saved order
+    const defaults = [
+      ["Google", "https://www.google.com/", "🔎"],
+      ["YouTube", "https://www.youtube.com/", "▶️"],
+      ["Drive", "https://drive.google.com/", "📁"],
+      ["Docs", "https://docs.google.com/", "📄"],
+      ["Gmail", "https://mail.google.com/", "✉️"],
+      ["Maps", "https://maps.google.com/", "📍"],
+      ["Calendar", "https://calendar.google.com/", "📅"],
+      ["Photos", "https://photos.google.com/", "🌸"],
+      ["Sheets", "https://sheets.google.com/", "📊"],
+      ["Slides", "https://slides.google.com/", "📋"],
+      ["Meet", "https://meet.google.com/", "📹"],
+      ["Translate", "https://translate.google.com/", "🌐"]
+    ].map((app, index) => ({
+      id: String(index),
+      name: app[0],
+      url: app[1],
+      icon: app[2]
+    }));
+
+    const key = "fox-html-order";
+    let order = defaults.map(app => app.id);
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(key));
+
+      if (Array.isArray(saved)) {
+        order = [
+          ...new Set(
+            saved.filter(id => defaults.some(app => app.id === id))
+          )
+        ];
+
+        defaults.forEach(app => {
+          if (!order.includes(app.id)) {
+            order.push(app.id);
+          }
+        });
+      }
+    } catch (error) {
+      // Keep the default order if saved data cannot be read.
+    }
+
+    // Page elements and state
+    const grid = document.getElementById("apps");
+    const favorites = document.getElementById("favorites");
+    const panel = document.getElementById("panel");
+    const waffle = document.getElementById("waffle");
+    const arrange = document.getElementById("arrange");
+    const status = document.getElementById("status");
+
+    let editing = false;
+    let drag = null;
+
+    // Build an app tile
+    function tile(id, controls) {
+      const app = defaults.find(app => app.id === id);
+      const element = document.createElement("div");
+
+      element.className = "tile";
+      element.dataset.id = id;
+
+      const link = document.createElement("a");
+      link.href = app.url;
+
+      const icon = document.createElement("span");
+      icon.className = "icon";
+      icon.textContent = app.icon;
+      icon.setAttribute("aria-hidden", "true");
+
+      const label = document.createElement("span");
+      label.textContent = app.name;
+
+      link.append(icon, label);
+      element.append(link);
+
+      if (controls) {
+        const moves = document.createElement("div");
+        moves.className = "moves";
+
+        for (const [symbol, direction] of [["←", -1], ["→", 1]]) {
+          const button = document.createElement("button");
+          const destination = order.indexOf(id) + direction;
+
+          button.textContent = symbol;
+          button.setAttribute(
+            "aria-label",
+            `Move ${app.name} ${direction < 0 ? "earlier" : "later"}`
+          );
+          button.disabled =
+            destination < 0 || destination >= order.length;
+
+          button.onclick = () => {
+            move(id, order.indexOf(id) + direction);
+
+            grid
+              .querySelector(`[data-id="${id}"] button:not(:disabled)`)
+              ?.focus();
+          };
+
+          moves.append(button);
+        }
+
+        element.append(moves);
+      }
+
+      return element;
+    }
+
+    // Render and save app order
+    function render() {
+      grid.replaceChildren(
+        ...order.map(id => tile(id, true))
+      );
+
+      favorites.replaceChildren(
+        ...order.slice(0, 4).map(id => tile(id, false))
+      );
+    }
+
+    function save() {
+      try {
+        localStorage.setItem(key, JSON.stringify(order));
+        status.textContent = "Order saved.";
+      } catch (error) {
+        status.textContent =
+          "Order changed; browser storage is unavailable, " +
+          "so it may reset when reopened.";
+      }
+    }
+
+    function move(id, destination) {
+      const source = order.indexOf(id);
+
+      if (
+        source < 0 ||
+        destination < 0 ||
+        destination >= order.length ||
+        source === destination
+      ) {
+        return;
+      }
+
+      order.splice(source, 1);
+      order.splice(destination, 0, id);
+
+      render();
+      save();
+    }
+
+    // Open and close the app panel
+    function close() {
+      panel.hidden = true;
+      waffle.setAttribute("aria-expanded", "false");
+    }
+
+    waffle.onclick = () => {
+      panel.hidden = !panel.hidden;
+      waffle.setAttribute("aria-expanded", String(!panel.hidden));
+    };
+
+    document.addEventListener("click", event => {
+      if (
+        !panel.contains(event.target) &&
+        !waffle.contains(event.target)
+      ) {
+        close();
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && !panel.hidden) {
+        close();
+        waffle.focus();
+      }
+    });
+
+    // Toggle arrange mode
+    arrange.onclick = () => {
+      editing = !editing;
+      panel.classList.toggle("editing", editing);
+      arrange.textContent = editing ? "Done" : "Arrange";
+      arrange.setAttribute("aria-pressed", String(editing));
+    };
+
+    // Drag to reorder apps
+    grid.addEventListener("pointerdown", event => {
+      if (
+        !editing ||
+        event.target.closest("button") ||
+        !event.isPrimary ||
+        event.button !== 0
+      ) {
+        return;
+      }
+
+      const element = event.target.closest(".tile");
+      if (!element) return;
+
+      drag = {
+        id: element.dataset.id,
+        p: event.pointerId,
+        x: event.clientX,
+        y: event.clientY,
+        target: null,
+        moved: false
+      };
+
+      grid.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    });
+
+    grid.addEventListener("pointermove", event => {
+      if (!drag || event.pointerId !== drag.p) return;
+
+      if (
+        Math.hypot(
+          event.clientX - drag.x,
+          event.clientY - drag.y
+        ) > 5
+      ) {
+        drag.moved = true;
+      }
+
+      if (!drag.moved) return;
+
+      grid
+        .querySelector(`[data-id="${drag.id}"]`)
+        .classList.add("dragging");
+
+      grid.querySelectorAll(".over").forEach(element => {
+        element.classList.remove("over");
+      });
+
+      const target = document
+        .elementFromPoint(event.clientX, event.clientY)
+        ?.closest(".tile");
+
+      drag.target =
+        target && grid.contains(target) ? target.dataset.id : null;
+
+      if (drag.target !== null && drag.target !== drag.id) {
+        target.classList.add("over");
+      }
+    });
+
+    function end(event) {
+      if (!drag || event.pointerId !== drag.p) return;
+
+      const finishedDrag = drag;
+      drag = null;
+
+      grid.querySelectorAll(".over, .dragging").forEach(element => {
+        element.classList.remove("over", "dragging");
+      });
+
+      if (
+        event.type === "pointerup" &&
+        finishedDrag.moved &&
+        finishedDrag.target !== null
+      ) {
+        move(
+          finishedDrag.id,
+          order.indexOf(finishedDrag.target)
+        );
+      }
+    }
+
+    for (const eventName of [
+      "pointerup",
+      "pointercancel",
+      "lostpointercapture"
+    ]) {
+      grid.addEventListener(eventName, end);
+    }
+
+    // Reset and search
+    document.getElementById("reset").onclick = () => {
+      order = defaults.map(app => app.id);
+      render();
+      save();
+    };
+
+    document.getElementById("search").addEventListener(
+      "submit",
+      event => {
+        const query = document.getElementById("q");
+        query.value = query.value.trim();
+
+        if (!query.value) {
+          event.preventDefault();
+          query.focus();
+        }
+      }
+    );
+
+    render();
+  </script>
+</body>
+</html>
