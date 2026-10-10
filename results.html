@@ -6,12 +6,14 @@
 
   <title>EmberTail — Answers</title>
 
+  <!-- The same logo is used for the favicon and visible branding. -->
   <link
     rel="icon"
     type="image/png"
     sizes="512x512"
     href="EMBERTAILFAV.PNG"
   >
+
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
@@ -20,6 +22,13 @@
   <style>
     :root {
       color-scheme: dark;
+      --cream: #fff3df;
+      --muted: #c7beb1;
+      --orange: #e77a32;
+      --peach: #ffab5c;
+      --gold: #f5c95f;
+      --panel: #2d3033ed;
+      --input: #202225;
     }
 
     * {
@@ -29,7 +38,7 @@
     body {
       margin: 0;
       min-height: 100vh;
-      color: #fff3df;
+      color: var(--cream);
       font-family: "Comic Sans MS", cursive;
       background-color: #17191b;
       background-image:
@@ -57,23 +66,57 @@
     }
 
     a {
-      color: #ffab5c;
+      color: var(--peach);
+      text-underline-offset: 4px;
     }
 
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 4px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    /* Branding */
     .brand {
-      display: inline-block;
-      color: #fff3df;
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--cream);
       font-family: "Permanent Marker", cursive;
       font-size: clamp(34px, 7vw, 52px);
+      line-height: 1.2;
       text-shadow: 3px 4px 0 #6e3d24;
       text-decoration: none;
     }
 
+    .brand-logo {
+      display: block;
+      flex-shrink: 0;
+      width: clamp(42px, 8vw, 56px);
+      height: clamp(42px, 8vw, 56px);
+      object-fit: contain;
+    }
+
+    /* Search area */
     .search-card {
       margin-top: 24px;
       padding: 22px;
-      background: #2d3033ed;
-      border: 3px solid #e77a32;
+      background: var(--panel);
+      border: 3px solid var(--orange);
       border-radius: 23px;
       box-shadow: 0 12px 35px #0005;
     }
@@ -83,15 +126,10 @@
       align-items: center;
       gap: 12px;
       padding: 7px 9px 7px 18px;
-      background: #202225;
-      border: 2px solid #ffab5c;
+      background: var(--input);
+      border: 2px solid var(--peach);
       border-radius: 999px;
       box-shadow: 0 5px 0 #6e3d24;
-    }
-
-    input,
-    button {
-      font: inherit;
     }
 
     input {
@@ -100,17 +138,17 @@
       padding: 12px 0;
       border: 0;
       outline: none;
-      color: #fff3df;
+      color: var(--cream);
       background: transparent;
       font-size: 16px;
     }
 
     input::placeholder {
-      color: #c7beb1;
+      color: var(--muted);
     }
 
     form:focus-within {
-      outline: 2px solid #f5c95f;
+      outline: 2px solid var(--gold);
       outline-offset: 3px;
     }
 
@@ -120,10 +158,9 @@
       height: 42px;
       border: 0;
       border-radius: 50%;
-      background: #ffab5c;
+      background: var(--peach);
       color: #27211c;
       font-size: 24px;
-      cursor: pointer;
     }
 
     button:disabled {
@@ -131,42 +168,93 @@
       cursor: wait;
     }
 
-    a:focus-visible,
-    button:focus-visible {
-      outline: 3px solid #f5c95f;
-      outline-offset: 4px;
-    }
-
     .note {
       margin: 20px 0 0;
       font-size: 12px;
       line-height: 1.7;
-      color: #c7beb1;
+      color: var(--muted);
     }
 
+    /* Optional full-web search */
+    .web-search {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 18px;
+      padding: 10px 14px;
+      border: 1px solid var(--peach);
+      border-radius: 12px;
+      background: var(--input);
+      color: var(--cream);
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .web-search:hover {
+      background: #3c332b;
+      text-decoration: underline;
+    }
+
+    /* Status and section headings */
     #status {
-      padding: 0 4px;
+      margin: 22px 4px;
       line-height: 1.7;
-      color: #f5c95f;
+      color: var(--gold);
       text-shadow: 0 2px 4px #000;
     }
 
-    article {
-      margin: 18px 0;
-      padding: 23px;
-      background: #2d3033ed;
-      border: 2px solid #e77a32;
+    .section-heading {
+      margin: 28px 4px 14px;
+      font-size: 24px;
+      line-height: 1.4;
+      text-shadow: 0 2px 4px #000;
+    }
+
+    .section-note {
+      margin: -4px 4px 16px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .group-heading {
+      margin: 22px 4px 10px;
+      color: var(--gold);
+      font-size: 18px;
+      text-shadow: 0 2px 4px #000;
+    }
+
+    /* Answer and topic cards */
+    .card {
+      margin: 14px 0;
+      padding: 22px;
+      background: var(--panel);
+      border: 2px solid var(--orange);
       border-radius: 20px;
       box-shadow: 0 7px 0 #0003;
     }
 
-    article h2 {
-      margin: 0 0 12px;
-      font-size: 23px;
+    .card h2,
+    .card h3,
+    .card h4 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.4;
       overflow-wrap: anywhere;
     }
 
-    article p {
+    .card h2 a,
+    .card h3 a,
+    .card h4 a {
+      text-decoration: none;
+    }
+
+    .card h2 a:hover,
+    .card h3 a:hover,
+    .card h4 a:hover {
+      text-decoration: underline;
+    }
+
+    .card p {
       margin: 0;
       line-height: 1.8;
       overflow-wrap: anywhere;
@@ -175,29 +263,41 @@
 
     .source {
       display: inline-block;
-      margin-top: 16px;
+      margin-top: 14px;
+      font-size: 13px;
       overflow-wrap: anywhere;
     }
 
-    .retry {
+    .destination {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .empty-card {
+      border-color: #ffab5c80;
+    }
+
+    .secondary-button {
+      margin-top: 10px;
       padding: 10px 16px;
-      border: 2px solid #ffab5c;
+      border: 2px solid var(--peach);
       border-radius: 12px;
-      background: #202225;
-      color: #fff3df;
-      cursor: pointer;
+      background: var(--input);
+      color: var(--cream);
+    }
+
+    .secondary-button:hover {
+      background: #3c332b;
     }
 
     footer {
       margin-top: 35px;
-      color: #f5c95f;
+      color: var(--gold);
       font-size: 13px;
       text-align: center;
       text-shadow: 0 2px 4px #000;
-    }
-
-    [hidden] {
-      display: none !important;
     }
 
     @media (max-width: 500px) {
@@ -206,8 +306,22 @@
       }
 
       .search-card,
-      article {
+      .card {
         padding: 18px;
+      }
+
+      .brand {
+        gap: 10px;
+      }
+
+      .section-heading {
+        font-size: 21px;
+      }
+
+      .card h2,
+      .card h3,
+      .card h4 {
+        font-size: 20px;
       }
     }
   </style>
@@ -215,7 +329,20 @@
 
 <body>
   <main>
-    <a class="brand" href="index.html">🦊 Ember Tail</a>
+    <a
+      class="brand"
+      href="index.html"
+      aria-label="EmberTail home"
+    >
+      <img
+        class="brand-logo"
+        src="EMBERTAILFAV.PNG"
+        alt=""
+        width="56"
+        height="56"
+      >
+      <span>Ember Tail</span>
+    </a>
 
     <section class="search-card" aria-label="Search">
       <form
@@ -249,23 +376,39 @@
       </form>
 
       <p id="provider-note" class="note">
-        Topic summaries and related links from DuckDuckGo Instant Answers.
-        This is not a full-web results list.
-        Your query is sent directly to DuckDuckGo.
+        On-page answers and topic links from DuckDuckGo Instant Answers.
+        For ordinary web results, use the full-web search link below.
+        Your query is sent to DuckDuckGo.
       </p>
+
+      <a
+        id="web-search"
+        class="web-search"
+        target="_blank"
+        rel="noopener noreferrer"
+        hidden
+      >
+        Search the full web on DuckDuckGo ↗
+      </a>
     </section>
 
     <p id="status" role="status" aria-live="polite">
       Enter a topic to begin.
     </p>
 
-    <section
+    <div
       id="results"
-      aria-label="Answers and related topics"
+      role="region"
+      aria-label="Answers and topic links"
       aria-busy="false"
-    ></section>
+    ></div>
 
-    <button id="retry" class="retry" type="button" hidden>
+    <button
+      id="retry"
+      class="secondary-button"
+      type="button"
+      hidden
+    >
       Try again
     </button>
 
@@ -285,9 +428,11 @@
     const status = document.getElementById("status");
     const results = document.getElementById("results");
     const retry = document.getElementById("retry");
+    const webSearch = document.getElementById("web-search");
 
     let busy = false;
-    let counter = 0;
+    let callbackCounter = 0;
+    let sectionCounter = 0;
 
     function string(value) {
       return typeof value === "string" ? value : "";
@@ -302,19 +447,63 @@
         const url = new URL(value);
 
         return ["https:", "http:"].includes(url.protocol)
-          ? url.href
+          ? url
           : null;
       } catch {
         return null;
       }
     }
 
-    // Provider text is rendered as text, never inserted as HTML.
-    function addCard(title, description, destination, sourceLabel) {
-      const card = document.createElement("article");
+    function setWebSearch(query) {
+      const destination = new URL("https://duckduckgo.com/");
+      destination.searchParams.set("q", query);
+
+      webSearch.href = destination.href;
+      webSearch.hidden = false;
+    }
+
+    function updateAddress(query) {
+      const url = new URL(location.href);
+      url.searchParams.set("q", query);
+
+      history.replaceState(null, "", url);
+      document.title = `${query} — EmberTail Answers`;
+    }
+
+    function createSection(title, note = "") {
+      const section = document.createElement("section");
       const heading = document.createElement("h2");
+
+      heading.className = "section-heading";
+      heading.id = `answer-section-${++sectionCounter}`;
+      heading.textContent = title;
+
+      section.setAttribute("aria-labelledby", heading.id);
+      section.append(heading);
+
+      if (note) {
+        const paragraph = document.createElement("p");
+        paragraph.className = "section-note";
+        paragraph.textContent = note;
+        section.append(paragraph);
+      }
+
+      results.append(section);
+      return section;
+    }
+
+    function addAnswerCard(
+      container,
+      title,
+      description,
+      destination,
+      sourceLabel
+    ) {
+      const card = document.createElement("article");
+      const heading = document.createElement("h3");
       const paragraph = document.createElement("p");
 
+      card.className = "card";
       heading.textContent = title;
       paragraph.textContent = description;
 
@@ -325,21 +514,108 @@
       if (url) {
         const source = document.createElement("a");
         source.className = "source";
-        source.href = url;
+        source.href = url.href;
         source.rel = "noreferrer";
-        source.textContent = sourceLabel || "Open source ↗";
+        source.textContent = sourceLabel || "Read the source ↗";
         card.append(source);
       }
 
-      results.append(card);
+      container.append(card);
     }
 
-    function flattenTopics(items, depth = 0) {
+    // Use the topic's destination slug as its title when possible.
+    // The provider's text remains the description.
+    function topicDetails(item) {
+      const description = string(item.Text).trim();
+      const url = safeURL(item.FirstURL);
+      let title = "";
+
+      if (url) {
+        try {
+          const parts = url.pathname.split("/").filter(Boolean);
+          title = decodeURIComponent(parts.at(-1) || "")
+            .replace(/_/g, " ")
+            .trim();
+        } catch {
+          title = "";
+        }
+      }
+
+      // Fallback for links without a usable topic slug.
+      if (!title) {
+        const firstSentence = description.match(/^(.+?[.!?])(?:\s|$)/);
+        title = firstSentence
+          ? firstSentence[1]
+          : description.slice(0, 80);
+
+        if (!firstSentence && description.length > 80) {
+          title += "…";
+        }
+      }
+
+      return {
+        title: title || "Related meaning",
+        description,
+        url
+      };
+    }
+
+    function createTopicCard(item, headingLevel = 3) {
+      const topic = topicDetails(item);
+      const card = document.createElement("article");
+      const heading = document.createElement(`h${headingLevel}`);
+
+      card.className = "card";
+
+      if (topic.url) {
+        const link = document.createElement("a");
+        link.href = topic.url.href;
+        link.rel = "noreferrer";
+        link.textContent = topic.title;
+        heading.append(link);
+      } else {
+        heading.textContent = topic.title;
+      }
+
+      card.append(heading);
+
+      if (
+        topic.description &&
+        topic.description !== topic.title
+      ) {
+        const paragraph = document.createElement("p");
+        paragraph.textContent = topic.description;
+        card.append(paragraph);
+      }
+
+      if (topic.url) {
+        const destination = document.createElement("div");
+        destination.className = "destination";
+        destination.textContent = topic.url.hostname;
+        card.append(destination);
+      }
+
+      return card;
+    }
+
+    // Preserve provider groups rather than flattening all meanings.
+    function collectGroups(items, fallbackName, seen, depth = 0) {
       if (!Array.isArray(items) || depth > 5) {
         return [];
       }
 
-      const output = [];
+      const groups = [];
+      let looseItems = [];
+
+      function flushLooseItems() {
+        if (looseItems.length) {
+          groups.push({
+            name: fallbackName,
+            items: looseItems
+          });
+          looseItems = [];
+        }
+      }
 
       for (const item of items) {
         if (!item || typeof item !== "object") {
@@ -347,20 +623,121 @@
         }
 
         if (Array.isArray(item.Topics)) {
-          output.push(...flattenTopics(item.Topics, depth + 1));
-        } else if (string(item.Text)) {
-          output.push(item);
+          flushLooseItems();
+
+          groups.push(
+            ...collectGroups(
+              item.Topics,
+              string(item.Name).trim() || fallbackName,
+              seen,
+              depth + 1
+            )
+          );
+
+          continue;
+        }
+
+        if (!string(item.Text).trim()) {
+          continue;
+        }
+
+        const identity =
+          string(item.FirstURL) || string(item.Text);
+
+        if (seen.has(identity)) {
+          continue;
+        }
+
+        seen.add(identity);
+        looseItems.push(item);
+      }
+
+      flushLooseItems();
+      return groups;
+    }
+
+    function addTopicGroups(section, groups, initialCount = 5) {
+      // Merge repeated group names while preserving their first position.
+      const merged = [];
+
+      for (const group of groups) {
+        const existing = merged.find(entry => entry.name === group.name);
+
+        if (existing) {
+          existing.items.push(...group.items);
+        } else {
+          merged.push({
+            name: group.name,
+            items: [...group.items]
+          });
         }
       }
 
-      return output;
+      const showGroupHeadings =
+        merged.length > 1 ||
+        (
+          merged.length === 1 &&
+          !["Related topics", "Possible meanings", "Topic links"]
+            .includes(merged[0].name)
+        );
+
+      for (const group of merged) {
+        const groupContainer = document.createElement("div");
+
+        if (showGroupHeadings) {
+          const heading = document.createElement("h3");
+          heading.className = "group-heading";
+          heading.textContent = group.name;
+          groupContainer.append(heading);
+        }
+
+        const list = document.createElement("div");
+        const cards = group.items.map(item =>
+          createTopicCard(item, showGroupHeadings ? 4 : 3)
+        );
+
+        cards.forEach((card, index) => {
+          card.hidden = index >= initialCount;
+          list.append(card);
+        });
+
+        groupContainer.append(list);
+
+        if (cards.length > initialCount) {
+          const button = document.createElement("button");
+          const extraCount = cards.length - initialCount;
+          let expanded = false;
+
+          button.type = "button";
+          button.className = "secondary-button";
+          button.setAttribute("aria-expanded", "false");
+          button.textContent = `Show ${extraCount} more`;
+
+          button.addEventListener("click", () => {
+            expanded = !expanded;
+
+            cards.forEach((card, index) => {
+              card.hidden = !expanded && index >= initialCount;
+            });
+
+            button.setAttribute("aria-expanded", String(expanded));
+            button.textContent = expanded
+              ? "Show fewer"
+              : `Show ${extraCount} more`;
+          });
+
+          groupContainer.append(button);
+        }
+
+        section.append(groupContainer);
+      }
     }
 
-    // Fixed trusted provider endpoint; no Worker or API key.
+    // JSONP uses only the fixed DuckDuckGo endpoint.
     function requestAnswers(query) {
       return new Promise((resolve, reject) => {
         const callbackName =
-          `embertailAnswer_${Date.now()}_${++counter}`;
+          `embertailAnswer_${Date.now()}_${++callbackCounter}`;
 
         const script = document.createElement("script");
         let timer;
@@ -370,7 +747,7 @@
           clearTimeout(timer);
           script.remove();
 
-          // Ignore a late callback after a timeout.
+          // Ignore callbacks arriving shortly after a timeout.
           window[callbackName] = () => {};
 
           setTimeout(() => {
@@ -380,6 +757,7 @@
 
         function fail(message) {
           if (settled) return;
+
           settled = true;
           cleanup();
           reject(new Error(message));
@@ -387,13 +765,17 @@
 
         window[callbackName] = data => {
           if (settled) return;
+
           settled = true;
           cleanup();
           resolve(data);
         };
 
         timer = setTimeout(() => {
-          fail("The answer request timed out. Please try again later.");
+          fail(
+            "The answer request timed out. " +
+            "The full-web search link is still available above."
+          );
         }, 20000);
 
         script.onerror = () => {
@@ -415,11 +797,126 @@
       });
     }
 
-    function updateAddress(query) {
-      const url = new URL(location.href);
-      url.searchParams.set("q", query);
-      history.replaceState(null, "", url);
-      document.title = `${query} — EmberTail Answers`;
+    function renderAnswers(data, query) {
+      if (!data || typeof data !== "object") {
+        throw new Error("Unexpected answer response.");
+      }
+
+      const ambiguous = data.Type === "D";
+      let answerCount = 0;
+      let answerSection = null;
+
+      function getAnswerSection() {
+        if (!answerSection) {
+          answerSection = createSection("Topic answer");
+        }
+
+        return answerSection;
+      }
+
+      if (string(data.AbstractText).trim()) {
+        addAnswerCard(
+          getAnswerSection(),
+          string(data.Heading).trim() || query,
+          data.AbstractText,
+          data.AbstractURL,
+          string(data.AbstractSource)
+            ? `Source: ${data.AbstractSource} ↗`
+            : "Read the source ↗"
+        );
+
+        answerCount++;
+      }
+
+      if (string(data.Answer).trim()) {
+        addAnswerCard(
+          getAnswerSection(),
+          "Instant answer",
+          data.Answer,
+          null
+        );
+
+        answerCount++;
+      }
+
+      if (string(data.Definition).trim()) {
+        addAnswerCard(
+          getAnswerSection(),
+          "Definition",
+          data.Definition,
+          data.DefinitionURL,
+          string(data.DefinitionSource)
+            ? `Source: ${data.DefinitionSource} ↗`
+            : "Read the definition source ↗"
+        );
+
+        answerCount++;
+      }
+
+      const seen = new Set();
+
+      const directGroups = collectGroups(
+        data.Results,
+        "Topic links",
+        seen
+      );
+
+      const relatedGroups = collectGroups(
+        data.RelatedTopics,
+        ambiguous ? "Possible meanings" : "Related topics",
+        seen
+      );
+
+      const directCount = directGroups.reduce(
+        (total, group) => total + group.items.length,
+        0
+      );
+
+      const relatedCount = relatedGroups.reduce(
+        (total, group) => total + group.items.length,
+        0
+      );
+
+      if (directCount) {
+        const section = createSection("Topic links");
+        addTopicGroups(section, directGroups);
+      }
+
+      if (relatedCount) {
+        const section = createSection(
+          ambiguous
+            ? `Possible meanings of “${query}”`
+            : "Related topics",
+          ambiguous
+            ? "This term has multiple meanings. Choose the topic you meant."
+            : "Explore topics connected to your query."
+        );
+
+        addTopicGroups(section, relatedGroups);
+      }
+
+      if (!answerCount && !directCount && !relatedCount) {
+        const card = document.createElement("article");
+        const heading = document.createElement("h2");
+        const paragraph = document.createElement("p");
+
+        card.className = "card empty-card";
+        heading.textContent = "No on-page answer found";
+        paragraph.textContent =
+          "Try a named topic or a broader term, or use " +
+          "“Search the full web on DuckDuckGo” above. " +
+          "An empty answer response does not mean there are no web results.";
+
+        card.append(heading, paragraph);
+        results.append(card);
+
+        status.textContent = `No Instant Answer returned for “${query}”.`;
+        return;
+      }
+
+      status.textContent = ambiguous
+        ? `“${query}” has multiple possible meanings.`
+        : `Topic answers and links for “${query}”.`;
     }
 
     async function search(query) {
@@ -428,74 +925,19 @@
       busy = true;
       submit.disabled = true;
       retry.hidden = true;
+
+      setWebSearch(query);
       results.replaceChildren();
       results.setAttribute("aria-busy", "true");
       status.textContent = "Looking for topic answers…";
 
       try {
         const data = await requestAnswers(query);
-
-        if (!data || typeof data !== "object") {
-          throw new Error("Unexpected answer response.");
-        }
-
-        if (string(data.AbstractText)) {
-          addCard(
-            string(data.Heading) || query,
-            data.AbstractText,
-            data.AbstractURL,
-            string(data.AbstractSource)
-              ? `Source: ${data.AbstractSource} ↗`
-              : "Open source ↗"
-          );
-        }
-
-        if (string(data.Answer)) {
-          addCard("Instant answer", data.Answer, null);
-        }
-
-        if (string(data.Definition)) {
-          addCard(
-            "Definition",
-            data.Definition,
-            data.DefinitionURL,
-            string(data.DefinitionSource)
-              ? `Source: ${data.DefinitionSource} ↗`
-              : "Open definition source ↗"
-          );
-        }
-
-        // Some responses include direct answer links.
-        const direct = Array.isArray(data.Results)
-          ? data.Results
-          : [];
-
-        const related = flattenTopics(data.RelatedTopics);
-        const seen = new Set();
-
-        for (const item of [...direct, ...related].slice(0, 20)) {
-          if (!item || !string(item.Text)) continue;
-
-          const identity = `${item.FirstURL || ""}|${item.Text}`;
-          if (seen.has(identity)) continue;
-          seen.add(identity);
-
-          addCard(
-            "Topic link",
-            item.Text,
-            item.FirstURL,
-            "Explore topic ↗"
-          );
-        }
-
-        status.textContent = results.children.length
-          ? `Answers and topic links for “${query}”.`
-          : `No Instant Answer was returned for “${query}”. ` +
-            "Try a named topic or a broader term. " +
-            "This does not mean there are no web results.";
+        renderAnswers(data, query);
       } catch (error) {
         status.textContent =
           error.message || "Could not retrieve answers.";
+
         retry.hidden = false;
       } finally {
         busy = false;
@@ -516,7 +958,12 @@
     });
 
     retry.addEventListener("click", () => {
-      search(input.value.trim());
+      const query = input.value.trim();
+
+      if (query) {
+        updateAddress(query);
+        search(query);
+      }
     });
 
     const initial = new URLSearchParams(location.search).get("q");
