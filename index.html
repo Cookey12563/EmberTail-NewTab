@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>New Tab</title>
+  <title>EmberTail — New Tab</title>
 
   <link
-  rel="icon"
-  type="image/png"
-  sizes="512x512"
-  href="EMBERTAILFAV.PNG"
+    rel="icon"
+    type="image/png"
+    sizes="512x512"
+    href="EMBERTAILFAV.PNG"
   >
   <link
     rel="stylesheet"
@@ -79,7 +79,7 @@
       display: none !important;
     }
 
-    /* Header and nine-dot launcher */
+    /* Header and app launcher */
     header {
       position: absolute;
       right: 24px;
@@ -175,6 +175,7 @@
     }
 
     .submit {
+      flex-shrink: 0;
       width: 40px;
       height: 40px;
       border: 0;
@@ -182,6 +183,13 @@
       background: #ffab5c;
       color: #27211c;
       font-size: 24px;
+    }
+
+    .search-note {
+      margin: 18px 0 0;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #c7beb1;
     }
 
     /* App tiles */
@@ -255,6 +263,11 @@
       border-radius: 8px;
       padding: 6px 10px;
       font-size: 12px;
+    }
+
+    .moves button:disabled {
+      opacity: 0.4;
+      cursor: default;
     }
 
     .hint,
@@ -340,20 +353,15 @@
     <button
       id="waffle"
       class="waffle"
+      type="button"
       aria-label="Google apps"
       aria-expanded="false"
       aria-controls="panel"
     >
       <span class="dots" aria-hidden="true">
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
+        <i></i><i></i><i></i>
+        <i></i><i></i><i></i>
+        <i></i><i></i><i></i>
       </span>
     </button>
 
@@ -365,7 +373,12 @@
     >
       <div class="panel-head">
         <h2>Google apps</h2>
-        <button id="arrange" class="small" aria-pressed="false">
+        <button
+          id="arrange"
+          class="small"
+          type="button"
+          aria-pressed="false"
+        >
           Arrange
         </button>
       </div>
@@ -378,7 +391,9 @@
       <div id="apps" class="apps"></div>
       <p id="status" class="status" role="status"></p>
 
-      <button id="reset" class="small">Reset order</button>
+      <button id="reset" class="small" type="button">
+        Reset order
+      </button>
     </section>
   </header>
 
@@ -386,9 +401,10 @@
     <section class="home">
       <h1>Ember Tail</h1>
 
+      <!-- Queries now open our own answer page. -->
       <form
         id="search"
-        action="https://www.google.com/search"
+        action="results.html"
         method="get"
         role="search"
       >
@@ -398,16 +414,27 @@
           id="q"
           name="q"
           type="search"
+          maxlength="200"
           placeholder="Search Ember Tail"
-          aria-label="Search Ember Tail"
+          aria-label="Find topic answers with EmberTail"
+          aria-describedby="search-note"
           required
           autocomplete="off"
         >
 
-        <button class="submit" aria-label="Search" type="submit">
+        <button
+          class="submit"
+          aria-label="Find answers"
+          type="submit"
+        >
           ➜
         </button>
       </form>
+
+      <p id="search-note" class="search-note">
+        Topic answers and related links from DuckDuckGo.
+        Not a full-web results list.
+      </p>
 
       <nav
         id="favorites"
@@ -418,11 +445,11 @@
   </main>
 
   <footer>
-    🌿 🍄 ✦ Search the web with foxes ✦ 🍂 🐾
+    🌿 🍄 ✦ Explore with foxes ✦ 🍂 🐾
   </footer>
 
   <script>
-    // Default apps and saved order
+    // Preserve the original IDs and storage key for saved app order.
     const defaults = [
       ["Google", "https://www.google.com/", "🔎"],
       ["YouTube", "https://www.youtube.com/", "▶️"],
@@ -462,11 +489,10 @@
           }
         });
       }
-    } catch (error) {
-      // Keep the default order if saved data cannot be read.
+    } catch {
+      // Unavailable or invalid storage leaves the defaults intact.
     }
 
-    // Page elements and state
     const grid = document.getElementById("apps");
     const favorites = document.getElementById("favorites");
     const panel = document.getElementById("panel");
@@ -477,7 +503,6 @@
     let editing = false;
     let drag = null;
 
-    // Build an app tile
     function tile(id, controls) {
       const app = defaults.find(app => app.id === id);
       const element = document.createElement("div");
@@ -507,11 +532,13 @@
           const button = document.createElement("button");
           const destination = order.indexOf(id) + direction;
 
+          button.type = "button";
           button.textContent = symbol;
           button.setAttribute(
             "aria-label",
             `Move ${app.name} ${direction < 0 ? "earlier" : "later"}`
           );
+
           button.disabled =
             destination < 0 || destination >= order.length;
 
@@ -532,7 +559,6 @@
       return element;
     }
 
-    // Render and save app order
     function render() {
       grid.replaceChildren(
         ...order.map(id => tile(id, true))
@@ -547,7 +573,7 @@
       try {
         localStorage.setItem(key, JSON.stringify(order));
         status.textContent = "Order saved.";
-      } catch (error) {
+      } catch {
         status.textContent =
           "Order changed; browser storage is unavailable, " +
           "so it may reset when reopened.";
@@ -573,8 +599,7 @@
       save();
     }
 
-    // Open and close the app panel
-    function close() {
+    function closePanel() {
       panel.hidden = true;
       waffle.setAttribute("aria-expanded", "false");
     }
@@ -589,18 +614,17 @@
         !panel.contains(event.target) &&
         !waffle.contains(event.target)
       ) {
-        close();
+        closePanel();
       }
     });
 
     document.addEventListener("keydown", event => {
       if (event.key === "Escape" && !panel.hidden) {
-        close();
+        closePanel();
         waffle.focus();
       }
     });
 
-    // Toggle arrange mode
     arrange.onclick = () => {
       editing = !editing;
       panel.classList.toggle("editing", editing);
@@ -608,7 +632,13 @@
       arrange.setAttribute("aria-pressed", String(editing));
     };
 
-    // Drag to reorder apps
+    // Prevent keyboard activation of app links while arranging.
+    grid.addEventListener("click", event => {
+      if (editing && event.target.closest("a")) {
+        event.preventDefault();
+      }
+    });
+
     grid.addEventListener("pointerdown", event => {
       if (
         !editing ||
@@ -651,7 +681,7 @@
 
       grid
         .querySelector(`[data-id="${drag.id}"]`)
-        .classList.add("dragging");
+        ?.classList.add("dragging");
 
       grid.querySelectorAll(".over").forEach(element => {
         element.classList.remove("over");
@@ -699,7 +729,6 @@
       grid.addEventListener(eventName, end);
     }
 
-    // Reset and search
     document.getElementById("reset").onclick = () => {
       order = defaults.map(app => app.id);
       render();
