@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>EmberTail — Answers</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="512x512"
+    href="EMBERTAILFAV.PNG"
+  >
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+  >
+
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #fff3df;
+      font-family: "Comic Sans MS", cursive;
+      background-color: #17191b;
+      background-image:
+        url("background.png"),
+        radial-gradient(
+          circle at 18% 10%,
+          rgba(231, 122, 50, 0.19),
+          transparent 25rem
+        ),
+        radial-gradient(
+          circle at 82% 88%,
+          rgba(81, 107, 69, 0.24),
+          transparent 29rem
+        ),
+        linear-gradient(135deg, #34383c, #25282b 47%, #17191b);
+      background-size: cover, auto, auto, auto;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    main {
+      width: min(900px, 100%);
+      margin: auto;
+      padding: 35px 22px 60px;
+    }
+
+    a {
+      color: #ffab5c;
+    }
+
+    .brand {
+      display: inline-block;
+      color: #fff3df;
+      font-family: "Permanent Marker", cursive;
+      font-size: clamp(34px, 7vw, 52px);
+      text-shadow: 3px 4px 0 #6e3d24;
+      text-decoration: none;
+    }
+
+    .search-card {
+      margin-top: 24px;
+      padding: 22px;
+      background: #2d3033ed;
+      border: 3px solid #e77a32;
+      border-radius: 23px;
+      box-shadow: 0 12px 35px #0005;
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 7px 9px 7px 18px;
+      background: #202225;
+      border: 2px solid #ffab5c;
+      border-radius: 999px;
+      box-shadow: 0 5px 0 #6e3d24;
+    }
+
+    input,
+    button {
+      font: inherit;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 12px 0;
+      border: 0;
+      outline: none;
+      color: #fff3df;
+      background: transparent;
+      font-size: 16px;
+    }
+
+    input::placeholder {
+      color: #c7beb1;
+    }
+
+    form:focus-within {
+      outline: 2px solid #f5c95f;
+      outline-offset: 3px;
+    }
+
+    .submit {
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 50%;
+      background: #ffab5c;
+      color: #27211c;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: wait;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid #f5c95f;
+      outline-offset: 4px;
+    }
+
+    .note {
+      margin: 20px 0 0;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #c7beb1;
+    }
+
+    #status {
+      padding: 0 4px;
+      line-height: 1.7;
+      color: #f5c95f;
+      text-shadow: 0 2px 4px #000;
+    }
+
+    article {
+      margin: 18px 0;
+      padding: 23px;
+      background: #2d3033ed;
+      border: 2px solid #e77a32;
+      border-radius: 20px;
+      box-shadow: 0 7px 0 #0003;
+    }
+
+    article h2 {
+      margin: 0 0 12px;
+      font-size: 23px;
+      overflow-wrap: anywhere;
+    }
+
+    article p {
+      margin: 0;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+
+    .source {
+      display: inline-block;
+      margin-top: 16px;
+      overflow-wrap: anywhere;
+    }
+
+    .retry {
+      padding: 10px 16px;
+      border: 2px solid #ffab5c;
+      border-radius: 12px;
+      background: #202225;
+      color: #fff3df;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: 35px;
+      color: #f5c95f;
+      font-size: 13px;
+      text-align: center;
+      text-shadow: 0 2px 4px #000;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 500px) {
+      main {
+        padding: 25px 14px 40px;
+      }
+
+      .search-card,
+      article {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <a class="brand" href="index.html">🦊 Ember Tail</a>
+
+    <section class="search-card" aria-label="Search">
+      <form
+        id="search"
+        action="results.html"
+        method="get"
+        role="search"
+      >
+        <span aria-hidden="true">🔎</span>
+
+        <input
+          id="query"
+          name="q"
+          type="search"
+          maxlength="200"
+          placeholder="Find a topic…"
+          aria-label="Find topic answers"
+          aria-describedby="provider-note"
+          autocomplete="off"
+          required
+        >
+
+        <button
+          id="submit"
+          class="submit"
+          type="submit"
+          aria-label="Find answers"
+        >
+          ➜
+        </button>
+      </form>
+
+      <p id="provider-note" class="note">
+        Topic summaries and related links from DuckDuckGo Instant Answers.
+        This is not a full-web results list.
+        Your query is sent directly to DuckDuckGo.
+      </p>
+    </section>
+
+    <p id="status" role="status" aria-live="polite">
+      Enter a topic to begin.
+    </p>
+
+    <section
+      id="results"
+      aria-label="Answers and related topics"
+      aria-busy="false"
+    ></section>
+
+    <button id="retry" class="retry" type="button" hidden>
+      Try again
+    </button>
+
+    <noscript>
+      <p>This answer page needs JavaScript enabled.</p>
+    </noscript>
+
+    <footer>
+      🌿 🍄 ✦ Explore with foxes ✦ 🍂 🐾
+    </footer>
+  </main>
+
+  <script>
+    const form = document.getElementById("search");
+    const input = document.getElementById("query");
+    const submit = document.getElementById("submit");
+    const status = document.getElementById("status");
+    const results = document.getElementById("results");
+    const retry = document.getElementById("retry");
+
+    let busy = false;
+    let counter = 0;
+
+    function string(value) {
+      return typeof value === "string" ? value : "";
+    }
+
+    function safeURL(value) {
+      if (typeof value !== "string" || !value) {
+        return null;
+      }
+
+      try {
+        const url = new URL(value);
+
+        return ["https:", "http:"].includes(url.protocol)
+          ? url.href
+          : null;
+      } catch {
+        return null;
+      }
+    }
+
+    // Provider text is rendered as text, never inserted as HTML.
+    function addCard(title, description, destination, sourceLabel) {
+      const card = document.createElement("article");
+      const heading = document.createElement("h2");
+      const paragraph = document.createElement("p");
+
+      heading.textContent = title;
+      paragraph.textContent = description;
+
+      card.append(heading, paragraph);
+
+      const url = safeURL(destination);
+
+      if (url) {
+        const source = document.createElement("a");
+        source.className = "source";
+        source.href = url;
+        source.rel = "noreferrer";
+        source.textContent = sourceLabel || "Open source ↗";
+        card.append(source);
+      }
+
+      results.append(card);
+    }
+
+    function flattenTopics(items, depth = 0) {
+      if (!Array.isArray(items) || depth > 5) {
+        return [];
+      }
+
+      const output = [];
+
+      for (const item of items) {
+        if (!item || typeof item !== "object") {
+          continue;
+        }
+
+        if (Array.isArray(item.Topics)) {
+          output.push(...flattenTopics(item.Topics, depth + 1));
+        } else if (string(item.Text)) {
+          output.push(item);
+        }
+      }
+
+      return output;
+    }
+
+    // Fixed trusted provider endpoint; no Worker or API key.
+    function requestAnswers(query) {
+      return new Promise((resolve, reject) => {
+        const callbackName =
+          `embertailAnswer_${Date.now()}_${++counter}`;
+
+        const script = document.createElement("script");
+        let timer;
+        let settled = false;
+
+        function cleanup() {
+          clearTimeout(timer);
+          script.remove();
+
+          // Ignore a late callback after a timeout.
+          window[callbackName] = () => {};
+
+          setTimeout(() => {
+            delete window[callbackName];
+          }, 60000);
+        }
+
+        function fail(message) {
+          if (settled) return;
+          settled = true;
+          cleanup();
+          reject(new Error(message));
+        }
+
+        window[callbackName] = data => {
+          if (settled) return;
+          settled = true;
+          cleanup();
+          resolve(data);
+        };
+
+        timer = setTimeout(() => {
+          fail("The answer request timed out. Please try again later.");
+        }, 20000);
+
+        script.onerror = () => {
+          fail(
+            "Could not load DuckDuckGo answers. " +
+            "The service may be unavailable or inaccessible."
+          );
+        };
+
+        const endpoint = new URL("https://api.duckduckgo.com/");
+        endpoint.searchParams.set("q", query);
+        endpoint.searchParams.set("format", "json");
+        endpoint.searchParams.set("callback", callbackName);
+        endpoint.searchParams.set("no_html", "1");
+        endpoint.searchParams.set("no_redirect", "1");
+
+        script.src = endpoint.href;
+        document.head.append(script);
+      });
+    }
+
+    function updateAddress(query) {
+      const url = new URL(location.href);
+      url.searchParams.set("q", query);
+      history.replaceState(null, "", url);
+      document.title = `${query} — EmberTail Answers`;
+    }
+
+    async function search(query) {
+      if (busy || !query) return;
+
+      busy = true;
+      submit.disabled = true;
+      retry.hidden = true;
+      results.replaceChildren();
+      results.setAttribute("aria-busy", "true");
+      status.textContent = "Looking for topic answers…";
+
+      try {
+        const data = await requestAnswers(query);
+
+        if (!data || typeof data !== "object") {
+          throw new Error("Unexpected answer response.");
+        }
+
+        if (string(data.AbstractText)) {
+          addCard(
+            string(data.Heading) || query,
+            data.AbstractText,
+            data.AbstractURL,
+            string(data.AbstractSource)
+              ? `Source: ${data.AbstractSource} ↗`
+              : "Open source ↗"
+          );
+        }
+
+        if (string(data.Answer)) {
+          addCard("Instant answer", data.Answer, null);
+        }
+
+        if (string(data.Definition)) {
+          addCard(
+            "Definition",
+            data.Definition,
+            data.DefinitionURL,
+            string(data.DefinitionSource)
+              ? `Source: ${data.DefinitionSource} ↗`
+              : "Open definition source ↗"
+          );
+        }
+
+        // Some responses include direct answer links.
+        const direct = Array.isArray(data.Results)
+          ? data.Results
+          : [];
+
+        const related = flattenTopics(data.RelatedTopics);
+        const seen = new Set();
+
+        for (const item of [...direct, ...related].slice(0, 20)) {
+          if (!item || !string(item.Text)) continue;
+
+          const identity = `${item.FirstURL || ""}|${item.Text}`;
+          if (seen.has(identity)) continue;
+          seen.add(identity);
+
+          addCard(
+            "Topic link",
+            item.Text,
+            item.FirstURL,
+            "Explore topic ↗"
+          );
+        }
+
+        status.textContent = results.children.length
+          ? `Answers and topic links for “${query}”.`
+          : `No Instant Answer was returned for “${query}”. ` +
+            "Try a named topic or a broader term. " +
+            "This does not mean there are no web results.";
+      } catch (error) {
+        status.textContent =
+          error.message || "Could not retrieve answers.";
+        retry.hidden = false;
+      } finally {
+        busy = false;
+        submit.disabled = false;
+        results.setAttribute("aria-busy", "false");
+      }
+    }
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+
+      const query = input.value.trim();
+      if (!query || busy) return;
+
+      input.value = query;
+      updateAddress(query);
+      search(query);
+    });
+
+    retry.addEventListener("click", () => {
+      search(input.value.trim());
+    });
+
+    const initial = new URLSearchParams(location.search).get("q");
+
+    if (initial) {
+      input.value = initial.slice(0, 200).trim();
+
+      if (input.value) {
+        document.title = `${input.value} — EmberTail Answers`;
+        search(input.value);
+      }
+    }
+  </script>
+</body>
+</html>
