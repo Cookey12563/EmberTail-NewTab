@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>EmberTail — Answers</title>
+  <title>Ember Tail</title>
 
   <link
     rel="icon"
@@ -600,7 +600,7 @@
           ➜
         </button>
       </form>
-      
+
       <a
         id="web-search"
         class="web-search"
@@ -984,7 +984,7 @@
         const url = new URL(location.href);
         url.searchParams.set("q", query);
         history.replaceState(null, "", url);
-        document.title = `${query} — EmberTail Answers`;
+        document.title = `${query} - Ember Tail`;
       }
 
       function createSection(title, note = "") {
@@ -1316,6 +1316,32 @@
           return answerSection;
         }
 
+        const seen = new Set();
+        const directGroups = collectGroups(
+          data.Results,
+          "Topic links",
+          seen
+        );
+        const relatedGroups = collectGroups(
+          data.RelatedTopics,
+          ambiguous ? "Possible meanings" : "Related topics",
+          seen
+        );
+
+        const directCount = directGroups.reduce(
+          (total, group) => total + group.items.length,
+          0
+        );
+        const relatedCount = relatedGroups.reduce(
+          (total, group) => total + group.items.length,
+          0
+        );
+
+        if (directCount) {
+          const section = createSection("Topic links");
+          addTopicGroups(section, directGroups);
+        }
+
         if (string(data.AbstractText).trim()) {
           addAnswerCard(
             getAnswerSection(),
@@ -1350,32 +1376,6 @@
               : "Read the definition source ↗"
           );
           answerCount++;
-        }
-
-        const seen = new Set();
-        const directGroups = collectGroups(
-          data.Results,
-          "Topic links",
-          seen
-        );
-        const relatedGroups = collectGroups(
-          data.RelatedTopics,
-          ambiguous ? "Possible meanings" : "Related topics",
-          seen
-        );
-
-        const directCount = directGroups.reduce(
-          (total, group) => total + group.items.length,
-          0
-        );
-        const relatedCount = relatedGroups.reduce(
-          (total, group) => total + group.items.length,
-          0
-        );
-
-        if (directCount) {
-          const section = createSection("Topic links");
-          addTopicGroups(section, directGroups);
         }
 
         if (relatedCount) {
@@ -1464,7 +1464,7 @@
         input.value = initial.slice(0, 200).trim();
 
         if (input.value) {
-          document.title = `${input.value} — EmberTail Answers`;
+          document.title = `${input.value} - Ember Tail`;
           search(input.value);
         }
       }
