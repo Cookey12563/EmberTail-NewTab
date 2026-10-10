@@ -6,14 +6,12 @@
 
   <title>EmberTail — Answers</title>
 
-  <!-- The same logo is used for the favicon and visible branding. -->
   <link
     rel="icon"
     type="image/png"
     sizes="512x512"
     href="EMBERTAILFAV.PNG"
   >
-
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
@@ -41,8 +39,9 @@
       color: var(--cream);
       font-family: "Comic Sans MS", cursive;
       background-color: #17191b;
+
+      /* Gradients only: no background image file. */
       background-image:
-        url("background.png"),
         radial-gradient(
           circle at 18% 10%,
           rgba(231, 122, 50, 0.19),
@@ -54,15 +53,13 @@
           transparent 29rem
         ),
         linear-gradient(135deg, #34383c, #25282b 47%, #17191b);
-      background-size: cover, auto, auto, auto;
-      background-position: center;
       background-attachment: fixed;
     }
 
     main {
       width: min(900px, 100%);
       margin: auto;
-      padding: 35px 22px 60px;
+      padding: 30px 22px 60px;
     }
 
     a {
@@ -90,7 +87,15 @@
       display: none !important;
     }
 
-    /* Branding */
+    /* Logo and app launcher */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
     .brand {
       display: inline-flex;
       align-items: center;
@@ -109,6 +114,170 @@
       width: clamp(42px, 8vw, 56px);
       height: clamp(42px, 8vw, 56px);
       object-fit: contain;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-left: auto;
+    }
+
+    .app-header > a {
+      color: var(--cream);
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .app-header > a:hover {
+      text-decoration: underline;
+    }
+
+    .app-launcher {
+      position: relative;
+      z-index: 10;
+    }
+
+    .app-waffle {
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border: 2px solid var(--orange);
+      border-radius: 50%;
+      background: #2d3033;
+      box-shadow: 0 4px 0 #6e3d24;
+    }
+
+    .app-dots {
+      display: grid;
+      grid-template-columns: repeat(3, 5px);
+      gap: 4px;
+    }
+
+    .app-dots i {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--cream);
+    }
+
+    .app-panel {
+      position: absolute;
+      right: 0;
+      top: 66px;
+      width: min(360px, calc(100vw - 44px));
+      max-height: 60vh;
+      overflow-y: auto;
+      padding: 18px;
+      border: 3px solid var(--orange);
+      border-radius: 23px;
+      background: #2d3033;
+      box-shadow: 0 12px 40px #0009;
+    }
+
+    .app-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .app-panel-head h2 {
+      margin: 0;
+      font-size: 19px;
+    }
+
+    .app-hint,
+    .app-status {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .app-status {
+      color: var(--gold);
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .app-tile {
+      padding: 10px 3px;
+      border-radius: 14px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .app-tile:hover {
+      background: #fff3df14;
+    }
+
+    .app-tile a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .app-icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border: 2px solid #fff3df30;
+      border-radius: 15px;
+      background: var(--input);
+      font: 26px Arial;
+    }
+
+    .app-small,
+    .app-moves button {
+      padding: 6px 10px;
+      border: 1px solid var(--peach);
+      border-radius: 8px;
+      background: var(--input);
+      color: var(--cream);
+      font-size: 12px;
+    }
+
+    .app-moves {
+      display: none;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .app-editing .app-moves {
+      display: flex;
+    }
+
+    .app-editing .app-tile {
+      border: 1px dashed #ffab5c80;
+      touch-action: none;
+      cursor: grab;
+    }
+
+    .app-editing .app-tile a {
+      pointer-events: none;
+    }
+
+    .app-dragging {
+      opacity: 0.4;
+    }
+
+    .app-over {
+      background: #f5c95f33;
+    }
+
+    .app-moves button:disabled {
+      opacity: 0.4;
+      cursor: default;
     }
 
     /* Search area */
@@ -163,7 +332,7 @@
       font-size: 24px;
     }
 
-    button:disabled {
+    .submit:disabled {
       opacity: 0.5;
       cursor: wait;
     }
@@ -175,7 +344,6 @@
       color: var(--muted);
     }
 
-    /* Optional full-web search */
     .web-search {
       display: inline-flex;
       align-items: center;
@@ -194,7 +362,7 @@
       text-decoration: underline;
     }
 
-    /* Status and section headings */
+    /* Answers */
     #status {
       margin: 22px 4px;
       line-height: 1.7;
@@ -223,7 +391,6 @@
       text-shadow: 0 2px 4px #000;
     }
 
-    /* Answer and topic cards */
     .card {
       margin: 14px 0;
       padding: 22px;
@@ -314,6 +481,10 @@
         gap: 10px;
       }
 
+      .app-panel {
+        width: min(360px, calc(100vw - 28px));
+      }
+
       .section-heading {
         font-size: 21px;
       }
@@ -329,20 +500,75 @@
 
 <body>
   <main>
-    <a
-      class="brand"
-      href="index.html"
-      aria-label="EmberTail home"
-    >
-      <img
-        class="brand-logo"
-        src="EMBERTAILFAV.PNG"
-        alt=""
-        width="56"
-        height="56"
+    <header class="topbar">
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="EmberTail home"
       >
-      <span>Ember Tail</span>
-    </a>
+        <img
+          class="brand-logo"
+          src="EMBERTAILFAV.PNG"
+          alt=""
+          width="56"
+          height="56"
+        >
+        <span>Ember Tail</span>
+      </a>
+
+      <div class="app-header">
+        <a href="https://mail.google.com/">Gmail</a>
+        <a href="https://www.google.com/imghp">Images</a>
+
+        <div class="app-launcher">
+          <button
+            id="app-waffle"
+            class="app-waffle"
+            type="button"
+            aria-label="Google apps"
+            aria-expanded="false"
+            aria-controls="app-panel"
+          >
+            <span class="app-dots" aria-hidden="true">
+              <i></i><i></i><i></i>
+              <i></i><i></i><i></i>
+              <i></i><i></i><i></i>
+            </span>
+          </button>
+
+          <section
+            id="app-panel"
+            class="app-panel"
+            aria-label="Google apps launcher"
+            hidden
+          >
+            <div class="app-panel-head">
+              <h2>Google apps</h2>
+              <button
+                id="app-arrange"
+                class="app-small"
+                type="button"
+                aria-pressed="false"
+              >
+                Arrange
+              </button>
+            </div>
+
+            <p class="app-hint">
+              Drag apps or use the arrows in Arrange mode.
+              The first four become your homepage favorites.
+            </p>
+
+            <div id="app-grid" class="app-grid"></div>
+            <p id="app-status" class="app-status" role="status"></p>
+
+            <button id="app-reset" class="app-small" type="button">
+              Reset order
+            </button>
+          </section>
+        </div>
+      </div>
+    </header>
 
     <section class="search-card" aria-label="Search">
       <form
@@ -377,8 +603,8 @@
 
       <p id="provider-note" class="note">
         On-page answers and topic links from DuckDuckGo Instant Answers.
-        For ordinary web results, use the full-web search link below.
-        Your query is sent to DuckDuckGo.
+        For ordinary web results, use the Google link below.
+        Your query is sent to DuckDuckGo when finding answers.
       </p>
 
       <a
@@ -413,7 +639,7 @@
     </button>
 
     <noscript>
-      <p>This answer page needs JavaScript enabled.</p>
+      <p>This page needs JavaScript for answers and the app launcher.</p>
     </noscript>
 
     <footer>
@@ -422,560 +648,833 @@
   </main>
 
   <script>
-    const form = document.getElementById("search");
-    const input = document.getElementById("query");
-    const submit = document.getElementById("submit");
-    const status = document.getElementById("status");
-    const results = document.getElementById("results");
-    const retry = document.getElementById("retry");
-    const webSearch = document.getElementById("web-search");
+    // App launcher: isolated from the answer-search variables.
+    (() => {
+      const defaults = [
+        ["Google", "https://www.google.com/", "🔎"],
+        ["YouTube", "https://www.youtube.com/", "▶️"],
+        ["Drive", "https://drive.google.com/", "📁"],
+        ["Docs", "https://docs.google.com/", "📄"],
+        ["Gmail", "https://mail.google.com/", "✉️"],
+        ["Maps", "https://maps.google.com/", "📍"],
+        ["Calendar", "https://calendar.google.com/", "📅"],
+        ["Photos", "https://photos.google.com/", "🌸"],
+        ["Sheets", "https://sheets.google.com/", "📊"],
+        ["Slides", "https://slides.google.com/", "📋"],
+        ["Meet", "https://meet.google.com/", "📹"],
+        ["Translate", "https://translate.google.com/", "🌐"]
+      ].map((app, index) => ({
+        id: String(index),
+        name: app[0],
+        url: app[1],
+        icon: app[2]
+      }));
 
-    let busy = false;
-    let callbackCounter = 0;
-    let sectionCounter = 0;
+      const key = "fox-html-order";
+      const grid = document.getElementById("app-grid");
+      const panel = document.getElementById("app-panel");
+      const waffle = document.getElementById("app-waffle");
+      const arrange = document.getElementById("app-arrange");
+      const status = document.getElementById("app-status");
+      const reset = document.getElementById("app-reset");
 
-    function string(value) {
-      return typeof value === "string" ? value : "";
-    }
+      let order = [];
+      let editing = false;
+      let drag = null;
 
-    function safeURL(value) {
-      if (typeof value !== "string" || !value) {
-        return null;
-      }
+      function readOrder() {
+        let saved = [];
 
-      try {
-        const url = new URL(value);
-
-        return ["https:", "http:"].includes(url.protocol)
-          ? url
-          : null;
-      } catch {
-        return null;
-      }
-    }
-
-    function setWebSearch(query) {
-      const destination = new URL("https://www.google.com/search");
-      destination.searchParams.set("q", query);
-
-      webSearch.href = destination.href;
-      webSearch.hidden = false;
-}
-
-    function updateAddress(query) {
-      const url = new URL(location.href);
-      url.searchParams.set("q", query);
-
-      history.replaceState(null, "", url);
-      document.title = `${query} — EmberTail Answers`;
-    }
-
-    function createSection(title, note = "") {
-      const section = document.createElement("section");
-      const heading = document.createElement("h2");
-
-      heading.className = "section-heading";
-      heading.id = `answer-section-${++sectionCounter}`;
-      heading.textContent = title;
-
-      section.setAttribute("aria-labelledby", heading.id);
-      section.append(heading);
-
-      if (note) {
-        const paragraph = document.createElement("p");
-        paragraph.className = "section-note";
-        paragraph.textContent = note;
-        section.append(paragraph);
-      }
-
-      results.append(section);
-      return section;
-    }
-
-    function addAnswerCard(
-      container,
-      title,
-      description,
-      destination,
-      sourceLabel
-    ) {
-      const card = document.createElement("article");
-      const heading = document.createElement("h3");
-      const paragraph = document.createElement("p");
-
-      card.className = "card";
-      heading.textContent = title;
-      paragraph.textContent = description;
-
-      card.append(heading, paragraph);
-
-      const url = safeURL(destination);
-
-      if (url) {
-        const source = document.createElement("a");
-        source.className = "source";
-        source.href = url.href;
-        source.rel = "noreferrer";
-        source.textContent = sourceLabel || "Read the source ↗";
-        card.append(source);
-      }
-
-      container.append(card);
-    }
-
-    // Use the topic's destination slug as its title when possible.
-    // The provider's text remains the description.
-    function topicDetails(item) {
-      const description = string(item.Text).trim();
-      const url = safeURL(item.FirstURL);
-      let title = "";
-
-      if (url) {
         try {
-          const parts = url.pathname.split("/").filter(Boolean);
-          title = decodeURIComponent(parts.at(-1) || "")
-            .replace(/_/g, " ")
-            .trim();
+          const value = JSON.parse(localStorage.getItem(key));
+          if (Array.isArray(value)) saved = value;
         } catch {
-          title = "";
-        }
-      }
-
-      // Fallback for links without a usable topic slug.
-      if (!title) {
-        const firstSentence = description.match(/^(.+?[.!?])(?:\s|$)/);
-        title = firstSentence
-          ? firstSentence[1]
-          : description.slice(0, 80);
-
-        if (!firstSentence && description.length > 80) {
-          title += "…";
-        }
-      }
-
-      return {
-        title: title || "Related meaning",
-        description,
-        url
-      };
-    }
-
-    function createTopicCard(item, headingLevel = 3) {
-      const topic = topicDetails(item);
-      const card = document.createElement("article");
-      const heading = document.createElement(`h${headingLevel}`);
-
-      card.className = "card";
-
-      if (topic.url) {
-        const link = document.createElement("a");
-        link.href = topic.url.href;
-        link.rel = "noreferrer";
-        link.textContent = topic.title;
-        heading.append(link);
-      } else {
-        heading.textContent = topic.title;
-      }
-
-      card.append(heading);
-
-      if (
-        topic.description &&
-        topic.description !== topic.title
-      ) {
-        const paragraph = document.createElement("p");
-        paragraph.textContent = topic.description;
-        card.append(paragraph);
-      }
-
-      if (topic.url) {
-        const destination = document.createElement("div");
-        destination.className = "destination";
-        destination.textContent = topic.url.hostname;
-        card.append(destination);
-      }
-
-      return card;
-    }
-
-    // Preserve provider groups rather than flattening all meanings.
-    function collectGroups(items, fallbackName, seen, depth = 0) {
-      if (!Array.isArray(items) || depth > 5) {
-        return [];
-      }
-
-      const groups = [];
-      let looseItems = [];
-
-      function flushLooseItems() {
-        if (looseItems.length) {
-          groups.push({
-            name: fallbackName,
-            items: looseItems
-          });
-          looseItems = [];
-        }
-      }
-
-      for (const item of items) {
-        if (!item || typeof item !== "object") {
-          continue;
+          // Use defaults when saved data is unavailable.
         }
 
-        if (Array.isArray(item.Topics)) {
-          flushLooseItems();
+        const valid = [...new Set(
+          saved.filter(id => defaults.some(app => app.id === id))
+        )];
 
-          groups.push(
-            ...collectGroups(
-              item.Topics,
-              string(item.Name).trim() || fallbackName,
-              seen,
-              depth + 1
-            )
-          );
-
-          continue;
-        }
-
-        if (!string(item.Text).trim()) {
-          continue;
-        }
-
-        const identity =
-          string(item.FirstURL) || string(item.Text);
-
-        if (seen.has(identity)) {
-          continue;
-        }
-
-        seen.add(identity);
-        looseItems.push(item);
-      }
-
-      flushLooseItems();
-      return groups;
-    }
-
-    function addTopicGroups(section, groups, initialCount = 5) {
-      // Merge repeated group names while preserving their first position.
-      const merged = [];
-
-      for (const group of groups) {
-        const existing = merged.find(entry => entry.name === group.name);
-
-        if (existing) {
-          existing.items.push(...group.items);
-        } else {
-          merged.push({
-            name: group.name,
-            items: [...group.items]
-          });
-        }
-      }
-
-      const showGroupHeadings =
-        merged.length > 1 ||
-        (
-          merged.length === 1 &&
-          !["Related topics", "Possible meanings", "Topic links"]
-            .includes(merged[0].name)
-        );
-
-      for (const group of merged) {
-        const groupContainer = document.createElement("div");
-
-        if (showGroupHeadings) {
-          const heading = document.createElement("h3");
-          heading.className = "group-heading";
-          heading.textContent = group.name;
-          groupContainer.append(heading);
-        }
-
-        const list = document.createElement("div");
-        const cards = group.items.map(item =>
-          createTopicCard(item, showGroupHeadings ? 4 : 3)
-        );
-
-        cards.forEach((card, index) => {
-          card.hidden = index >= initialCount;
-          list.append(card);
+        defaults.forEach(app => {
+          if (!valid.includes(app.id)) valid.push(app.id);
         });
 
-        groupContainer.append(list);
+        return valid;
+      }
 
-        if (cards.length > initialCount) {
+      function tile(id) {
+        const app = defaults.find(app => app.id === id);
+        const element = document.createElement("div");
+
+        element.className = "app-tile";
+        element.dataset.id = id;
+
+        const link = document.createElement("a");
+        link.href = app.url;
+
+        const icon = document.createElement("span");
+        icon.className = "app-icon";
+        icon.textContent = app.icon;
+        icon.setAttribute("aria-hidden", "true");
+
+        const label = document.createElement("span");
+        label.textContent = app.name;
+
+        link.append(icon, label);
+        element.append(link);
+
+        const controls = document.createElement("div");
+        controls.className = "app-moves";
+
+        for (const [symbol, direction] of [["←", -1], ["→", 1]]) {
           const button = document.createElement("button");
-          const extraCount = cards.length - initialCount;
-          let expanded = false;
+          const destination = order.indexOf(id) + direction;
 
           button.type = "button";
-          button.className = "secondary-button";
-          button.setAttribute("aria-expanded", "false");
-          button.textContent = `Show ${extraCount} more`;
+          button.textContent = symbol;
+          button.disabled =
+            destination < 0 || destination >= order.length;
 
-          button.addEventListener("click", () => {
-            expanded = !expanded;
+          button.setAttribute(
+            "aria-label",
+            `Move ${app.name} ${direction < 0 ? "earlier" : "later"}`
+          );
 
-            cards.forEach((card, index) => {
-              card.hidden = !expanded && index >= initialCount;
-            });
+          button.onclick = () => {
+            move(id, order.indexOf(id) + direction);
 
-            button.setAttribute("aria-expanded", String(expanded));
-            button.textContent = expanded
-              ? "Show fewer"
-              : `Show ${extraCount} more`;
+            grid.querySelector(
+              `[data-id="${id}"] button:not(:disabled)`
+            )?.focus();
+          };
+
+          controls.append(button);
+        }
+
+        element.append(controls);
+        return element;
+      }
+
+      function render() {
+        grid.replaceChildren(...order.map(tile));
+      }
+
+      function save() {
+        try {
+          localStorage.setItem(key, JSON.stringify(order));
+          status.textContent = "Order saved for both pages.";
+        } catch {
+          status.textContent =
+            "Changed here, but browser storage is unavailable.";
+        }
+      }
+
+      function move(id, destination) {
+        const source = order.indexOf(id);
+
+        if (
+          source < 0 ||
+          destination < 0 ||
+          destination >= order.length ||
+          source === destination
+        ) {
+          return;
+        }
+
+        order.splice(source, 1);
+        order.splice(destination, 0, id);
+        render();
+        save();
+      }
+
+      function refreshOrder() {
+        if (drag) return;
+
+        const next = readOrder();
+
+        if (JSON.stringify(next) !== JSON.stringify(order)) {
+          order = next;
+          render();
+        }
+      }
+
+      function closePanel() {
+        panel.hidden = true;
+        waffle.setAttribute("aria-expanded", "false");
+      }
+
+      waffle.onclick = () => {
+        refreshOrder();
+        panel.hidden = !panel.hidden;
+        waffle.setAttribute("aria-expanded", String(!panel.hidden));
+      };
+
+      document.addEventListener("click", event => {
+        if (
+          !panel.contains(event.target) &&
+          !waffle.contains(event.target)
+        ) {
+          closePanel();
+        }
+      });
+
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && !panel.hidden) {
+          closePanel();
+          waffle.focus();
+        }
+      });
+
+      arrange.onclick = () => {
+        editing = !editing;
+        panel.classList.toggle("app-editing", editing);
+        arrange.textContent = editing ? "Done" : "Arrange";
+        arrange.setAttribute("aria-pressed", String(editing));
+      };
+
+      grid.addEventListener("click", event => {
+        if (editing && event.target.closest("a")) {
+          event.preventDefault();
+        }
+      });
+
+      grid.addEventListener("pointerdown", event => {
+        if (
+          !editing ||
+          event.target.closest("button") ||
+          !event.isPrimary ||
+          event.button !== 0
+        ) {
+          return;
+        }
+
+        const element = event.target.closest(".app-tile");
+        if (!element) return;
+
+        drag = {
+          id: element.dataset.id,
+          pointerId: event.pointerId,
+          x: event.clientX,
+          y: event.clientY,
+          target: null,
+          moved: false
+        };
+
+        grid.setPointerCapture(event.pointerId);
+        event.preventDefault();
+      });
+
+      grid.addEventListener("pointermove", event => {
+        if (!drag || event.pointerId !== drag.pointerId) return;
+
+        if (
+          Math.hypot(
+            event.clientX - drag.x,
+            event.clientY - drag.y
+          ) > 5
+        ) {
+          drag.moved = true;
+        }
+
+        if (!drag.moved) return;
+
+        grid.querySelector(
+          `[data-id="${drag.id}"]`
+        )?.classList.add("app-dragging");
+
+        grid.querySelectorAll(".app-over").forEach(element => {
+          element.classList.remove("app-over");
+        });
+
+        const target = document
+          .elementFromPoint(event.clientX, event.clientY)
+          ?.closest(".app-tile");
+
+        drag.target =
+          target && grid.contains(target) ? target.dataset.id : null;
+
+        if (drag.target !== null && drag.target !== drag.id) {
+          target.classList.add("app-over");
+        }
+      });
+
+      function endDrag(event) {
+        if (!drag || event.pointerId !== drag.pointerId) return;
+
+        const finished = drag;
+        drag = null;
+
+        grid.querySelectorAll(".app-over, .app-dragging")
+          .forEach(element => {
+            element.classList.remove("app-over", "app-dragging");
           });
 
-          groupContainer.append(button);
+        if (
+          event.type === "pointerup" &&
+          finished.moved &&
+          finished.target !== null
+        ) {
+          move(finished.id, order.indexOf(finished.target));
         }
-
-        section.append(groupContainer);
       }
-    }
 
-    // JSONP uses only the fixed DuckDuckGo endpoint.
-    function requestAnswers(query) {
-      return new Promise((resolve, reject) => {
-        const callbackName =
-          `embertailAnswer_${Date.now()}_${++callbackCounter}`;
+      for (const eventName of [
+        "pointerup",
+        "pointercancel",
+        "lostpointercapture"
+      ]) {
+        grid.addEventListener(eventName, endDrag);
+      }
 
-        const script = document.createElement("script");
-        let timer;
-        let settled = false;
+      reset.onclick = () => {
+        order = defaults.map(app => app.id);
+        render();
+        save();
+      };
 
-        function cleanup() {
-          clearTimeout(timer);
-          script.remove();
-
-          // Ignore callbacks arriving shortly after a timeout.
-          window[callbackName] = () => {};
-
-          setTimeout(() => {
-            delete window[callbackName];
-          }, 60000);
+      window.addEventListener("storage", event => {
+        if (event.key === key || event.key === null) {
+          refreshOrder();
         }
-
-        function fail(message) {
-          if (settled) return;
-
-          settled = true;
-          cleanup();
-          reject(new Error(message));
-        }
-
-        window[callbackName] = data => {
-          if (settled) return;
-
-          settled = true;
-          cleanup();
-          resolve(data);
-        };
-
-        timer = setTimeout(() => {
-          fail(
-            "The answer request timed out. " +
-            "The full-web search link is still available above."
-          );
-        }, 20000);
-
-        script.onerror = () => {
-          fail(
-            "Could not load DuckDuckGo answers. " +
-            "The service may be unavailable or inaccessible."
-          );
-        };
-
-        const endpoint = new URL("https://api.duckduckgo.com/");
-        endpoint.searchParams.set("q", query);
-        endpoint.searchParams.set("format", "json");
-        endpoint.searchParams.set("callback", callbackName);
-        endpoint.searchParams.set("no_html", "1");
-        endpoint.searchParams.set("no_redirect", "1");
-
-        script.src = endpoint.href;
-        document.head.append(script);
       });
-    }
 
-    function renderAnswers(data, query) {
-      if (!data || typeof data !== "object") {
-        throw new Error("Unexpected answer response.");
+      window.addEventListener("pageshow", refreshOrder);
+      window.addEventListener("focus", refreshOrder);
+
+      order = readOrder();
+      render();
+    })();
+  </script>
+
+  <script>
+    // Topic answers and Google full-web link.
+    (() => {
+      const form = document.getElementById("search");
+      const input = document.getElementById("query");
+      const submit = document.getElementById("submit");
+      const status = document.getElementById("status");
+      const results = document.getElementById("results");
+      const retry = document.getElementById("retry");
+      const webSearch = document.getElementById("web-search");
+
+      let busy = false;
+      let callbackCounter = 0;
+      let sectionCounter = 0;
+
+      function string(value) {
+        return typeof value === "string" ? value : "";
       }
 
-      const ambiguous = data.Type === "D";
-      let answerCount = 0;
-      let answerSection = null;
+      function safeURL(value) {
+        if (typeof value !== "string" || !value) return null;
 
-      function getAnswerSection() {
-        if (!answerSection) {
-          answerSection = createSection("Topic answer");
+        try {
+          const url = new URL(value);
+          return ["https:", "http:"].includes(url.protocol)
+            ? url
+            : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function setWebSearch(query) {
+        const destination = new URL("https://www.google.com/search");
+        destination.searchParams.set("q", query);
+        webSearch.href = destination.href;
+        webSearch.hidden = false;
+      }
+
+      function updateAddress(query) {
+        const url = new URL(location.href);
+        url.searchParams.set("q", query);
+        history.replaceState(null, "", url);
+        document.title = `${query} — EmberTail Answers`;
+      }
+
+      function createSection(title, note = "") {
+        const section = document.createElement("section");
+        const heading = document.createElement("h2");
+
+        heading.className = "section-heading";
+        heading.id = `answer-section-${++sectionCounter}`;
+        heading.textContent = title;
+
+        section.setAttribute("aria-labelledby", heading.id);
+        section.append(heading);
+
+        if (note) {
+          const paragraph = document.createElement("p");
+          paragraph.className = "section-note";
+          paragraph.textContent = note;
+          section.append(paragraph);
         }
 
-        return answerSection;
+        results.append(section);
+        return section;
       }
 
-      if (string(data.AbstractText).trim()) {
-        addAnswerCard(
-          getAnswerSection(),
-          string(data.Heading).trim() || query,
-          data.AbstractText,
-          data.AbstractURL,
-          string(data.AbstractSource)
-            ? `Source: ${data.AbstractSource} ↗`
-            : "Read the source ↗"
-        );
-
-        answerCount++;
-      }
-
-      if (string(data.Answer).trim()) {
-        addAnswerCard(
-          getAnswerSection(),
-          "Instant answer",
-          data.Answer,
-          null
-        );
-
-        answerCount++;
-      }
-
-      if (string(data.Definition).trim()) {
-        addAnswerCard(
-          getAnswerSection(),
-          "Definition",
-          data.Definition,
-          data.DefinitionURL,
-          string(data.DefinitionSource)
-            ? `Source: ${data.DefinitionSource} ↗`
-            : "Read the definition source ↗"
-        );
-
-        answerCount++;
-      }
-
-      const seen = new Set();
-
-      const directGroups = collectGroups(
-        data.Results,
-        "Topic links",
-        seen
-      );
-
-      const relatedGroups = collectGroups(
-        data.RelatedTopics,
-        ambiguous ? "Possible meanings" : "Related topics",
-        seen
-      );
-
-      const directCount = directGroups.reduce(
-        (total, group) => total + group.items.length,
-        0
-      );
-
-      const relatedCount = relatedGroups.reduce(
-        (total, group) => total + group.items.length,
-        0
-      );
-
-      if (directCount) {
-        const section = createSection("Topic links");
-        addTopicGroups(section, directGroups);
-      }
-
-      if (relatedCount) {
-        const section = createSection(
-          ambiguous
-            ? `Possible meanings of “${query}”`
-            : "Related topics",
-          ambiguous
-            ? "This term has multiple meanings. Choose the topic you meant."
-            : "Explore topics connected to your query."
-        );
-
-        addTopicGroups(section, relatedGroups);
-      }
-
-      if (!answerCount && !directCount && !relatedCount) {
+      function addAnswerCard(
+        container,
+        title,
+        description,
+        destination,
+        sourceLabel
+      ) {
         const card = document.createElement("article");
-        const heading = document.createElement("h2");
+        const heading = document.createElement("h3");
         const paragraph = document.createElement("p");
 
-        card.className = "card empty-card";
-        heading.textContent = "No on-page answer found";
-        paragraph.textContent =
-          "Try a named topic or a broader term, or use " +
-          "“Search the full web on Google” above. " +
-          "An empty answer response does not mean there are no web results.";
-
+        card.className = "card";
+        heading.textContent = title;
+        paragraph.textContent = description;
         card.append(heading, paragraph);
-        results.append(card);
 
-        status.textContent = `No Instant Answer returned for “${query}”.`;
-        return;
+        const url = safeURL(destination);
+
+        if (url) {
+          const source = document.createElement("a");
+          source.className = "source";
+          source.href = url.href;
+          source.rel = "noreferrer";
+          source.textContent = sourceLabel || "Read the source ↗";
+          card.append(source);
+        }
+
+        container.append(card);
       }
 
-      status.textContent = ambiguous
-        ? `“${query}” has multiple possible meanings.`
-        : `Topic answers and links for “${query}”.`;
-    }
+      function topicDetails(item) {
+        const description = string(item.Text).trim();
+        const url = safeURL(item.FirstURL);
+        let title = "";
 
-    async function search(query) {
-      if (busy || !query) return;
+        if (url) {
+          try {
+            const parts = url.pathname.split("/").filter(Boolean);
+            title = decodeURIComponent(parts.at(-1) || "")
+              .replace(/_/g, " ")
+              .trim();
+          } catch {
+            title = "";
+          }
+        }
 
-      busy = true;
-      submit.disabled = true;
-      retry.hidden = true;
+        if (!title) {
+          const firstSentence =
+            description.match(/^(.+?[.!?])(?:\s|$)/);
 
-      setWebSearch(query);
-      results.replaceChildren();
-      results.setAttribute("aria-busy", "true");
-      status.textContent = "Looking for topic answers…";
+          title = firstSentence
+            ? firstSentence[1]
+            : description.slice(0, 80);
 
-      try {
-        const data = await requestAnswers(query);
-        renderAnswers(data, query);
-      } catch (error) {
-        status.textContent =
-          error.message || "Could not retrieve answers.";
+          if (!firstSentence && description.length > 80) {
+            title += "…";
+          }
+        }
 
-        retry.hidden = false;
-      } finally {
-        busy = false;
-        submit.disabled = false;
-        results.setAttribute("aria-busy", "false");
+        return {
+          title: title || "Related meaning",
+          description,
+          url
+        };
       }
-    }
 
-    form.addEventListener("submit", event => {
-      event.preventDefault();
+      function createTopicCard(item, headingLevel = 3) {
+        const topic = topicDetails(item);
+        const card = document.createElement("article");
+        const heading = document.createElement(`h${headingLevel}`);
 
-      const query = input.value.trim();
-      if (!query || busy) return;
+        card.className = "card";
 
-      input.value = query;
-      updateAddress(query);
-      search(query);
-    });
+        if (topic.url) {
+          const link = document.createElement("a");
+          link.href = topic.url.href;
+          link.rel = "noreferrer";
+          link.textContent = topic.title;
+          heading.append(link);
+        } else {
+          heading.textContent = topic.title;
+        }
 
-    retry.addEventListener("click", () => {
-      const query = input.value.trim();
+        card.append(heading);
 
-      if (query) {
+        if (
+          topic.description &&
+          topic.description !== topic.title
+        ) {
+          const paragraph = document.createElement("p");
+          paragraph.textContent = topic.description;
+          card.append(paragraph);
+        }
+
+        if (topic.url) {
+          const destination = document.createElement("div");
+          destination.className = "destination";
+          destination.textContent = topic.url.hostname;
+          card.append(destination);
+        }
+
+        return card;
+      }
+
+      function collectGroups(items, fallbackName, seen, depth = 0) {
+        if (!Array.isArray(items) || depth > 5) return [];
+
+        const groups = [];
+        let looseItems = [];
+
+        function flushLooseItems() {
+          if (looseItems.length) {
+            groups.push({
+              name: fallbackName,
+              items: looseItems
+            });
+            looseItems = [];
+          }
+        }
+
+        for (const item of items) {
+          if (!item || typeof item !== "object") continue;
+
+          if (Array.isArray(item.Topics)) {
+            flushLooseItems();
+
+            groups.push(
+              ...collectGroups(
+                item.Topics,
+                string(item.Name).trim() || fallbackName,
+                seen,
+                depth + 1
+              )
+            );
+
+            continue;
+          }
+
+          if (!string(item.Text).trim()) continue;
+
+          const identity = string(item.FirstURL) || string(item.Text);
+          if (seen.has(identity)) continue;
+
+          seen.add(identity);
+          looseItems.push(item);
+        }
+
+        flushLooseItems();
+        return groups;
+      }
+
+      function addTopicGroups(section, groups, initialCount = 5) {
+        const merged = [];
+
+        for (const group of groups) {
+          const existing = merged.find(
+            entry => entry.name === group.name
+          );
+
+          if (existing) {
+            existing.items.push(...group.items);
+          } else {
+            merged.push({
+              name: group.name,
+              items: [...group.items]
+            });
+          }
+        }
+
+        const showGroupHeadings =
+          merged.length > 1 ||
+          (
+            merged.length === 1 &&
+            !["Related topics", "Possible meanings", "Topic links"]
+              .includes(merged[0].name)
+          );
+
+        for (const group of merged) {
+          const groupContainer = document.createElement("div");
+
+          if (showGroupHeadings) {
+            const heading = document.createElement("h3");
+            heading.className = "group-heading";
+            heading.textContent = group.name;
+            groupContainer.append(heading);
+          }
+
+          const list = document.createElement("div");
+          const cards = group.items.map(item =>
+            createTopicCard(item, showGroupHeadings ? 4 : 3)
+          );
+
+          cards.forEach((card, index) => {
+            card.hidden = index >= initialCount;
+            list.append(card);
+          });
+
+          groupContainer.append(list);
+
+          if (cards.length > initialCount) {
+            const button = document.createElement("button");
+            const extraCount = cards.length - initialCount;
+            let expanded = false;
+
+            list.id = `topic-list-${++sectionCounter}`;
+            button.type = "button";
+            button.className = "secondary-button";
+            button.setAttribute("aria-controls", list.id);
+            button.setAttribute("aria-expanded", "false");
+            button.textContent = `Show ${extraCount} more`;
+
+            button.addEventListener("click", () => {
+              expanded = !expanded;
+
+              cards.forEach((card, index) => {
+                card.hidden = !expanded && index >= initialCount;
+              });
+
+              button.setAttribute("aria-expanded", String(expanded));
+              button.textContent = expanded
+                ? "Show fewer"
+                : `Show ${extraCount} more`;
+            });
+
+            groupContainer.append(button);
+          }
+
+          section.append(groupContainer);
+        }
+      }
+
+      function requestAnswers(query) {
+        return new Promise((resolve, reject) => {
+          const callbackName =
+            `embertailAnswer_${Date.now()}_${++callbackCounter}`;
+
+          const script = document.createElement("script");
+          let timer;
+          let settled = false;
+
+          function cleanup() {
+            clearTimeout(timer);
+            script.remove();
+
+            window[callbackName] = () => {};
+
+            setTimeout(() => {
+              delete window[callbackName];
+            }, 60000);
+          }
+
+          function fail(message) {
+            if (settled) return;
+            settled = true;
+            cleanup();
+            reject(new Error(message));
+          }
+
+          window[callbackName] = data => {
+            if (settled) return;
+            settled = true;
+            cleanup();
+            resolve(data);
+          };
+
+          timer = setTimeout(() => {
+            fail(
+              "The answer request timed out. " +
+              "The Google full-web search link is still available above."
+            );
+          }, 20000);
+
+          script.onerror = () => {
+            fail(
+              "Could not load DuckDuckGo answers. " +
+              "The service may be unavailable or inaccessible."
+            );
+          };
+
+          const endpoint = new URL("https://api.duckduckgo.com/");
+          endpoint.searchParams.set("q", query);
+          endpoint.searchParams.set("format", "json");
+          endpoint.searchParams.set("callback", callbackName);
+          endpoint.searchParams.set("no_html", "1");
+          endpoint.searchParams.set("no_redirect", "1");
+
+          script.src = endpoint.href;
+          document.head.append(script);
+        });
+      }
+
+      function renderAnswers(data, query) {
+        if (!data || typeof data !== "object") {
+          throw new Error("Unexpected answer response.");
+        }
+
+        const ambiguous = data.Type === "D";
+        let answerCount = 0;
+        let answerSection = null;
+
+        function getAnswerSection() {
+          if (!answerSection) {
+            answerSection = createSection("Topic answer");
+          }
+          return answerSection;
+        }
+
+        if (string(data.AbstractText).trim()) {
+          addAnswerCard(
+            getAnswerSection(),
+            string(data.Heading).trim() || query,
+            data.AbstractText,
+            data.AbstractURL,
+            string(data.AbstractSource)
+              ? `Source: ${data.AbstractSource} ↗`
+              : "Read the source ↗"
+          );
+          answerCount++;
+        }
+
+        if (string(data.Answer).trim()) {
+          addAnswerCard(
+            getAnswerSection(),
+            "Instant answer",
+            data.Answer,
+            null
+          );
+          answerCount++;
+        }
+
+        if (string(data.Definition).trim()) {
+          addAnswerCard(
+            getAnswerSection(),
+            "Definition",
+            data.Definition,
+            data.DefinitionURL,
+            string(data.DefinitionSource)
+              ? `Source: ${data.DefinitionSource} ↗`
+              : "Read the definition source ↗"
+          );
+          answerCount++;
+        }
+
+        const seen = new Set();
+        const directGroups = collectGroups(
+          data.Results,
+          "Topic links",
+          seen
+        );
+        const relatedGroups = collectGroups(
+          data.RelatedTopics,
+          ambiguous ? "Possible meanings" : "Related topics",
+          seen
+        );
+
+        const directCount = directGroups.reduce(
+          (total, group) => total + group.items.length,
+          0
+        );
+        const relatedCount = relatedGroups.reduce(
+          (total, group) => total + group.items.length,
+          0
+        );
+
+        if (directCount) {
+          const section = createSection("Topic links");
+          addTopicGroups(section, directGroups);
+        }
+
+        if (relatedCount) {
+          const section = createSection(
+            ambiguous
+              ? `Possible meanings of “${query}”`
+              : "Related topics",
+            ambiguous
+              ? "This term has multiple meanings. Choose the topic you meant."
+              : "Explore topics connected to your query."
+          );
+          addTopicGroups(section, relatedGroups);
+        }
+
+        if (!answerCount && !directCount && !relatedCount) {
+          const card = document.createElement("article");
+          const heading = document.createElement("h2");
+          const paragraph = document.createElement("p");
+
+          card.className = "card empty-card";
+          heading.textContent = "No on-page answer found";
+          paragraph.textContent =
+            "Try a named topic or a broader term, or use " +
+            "“Search the full web on Google” above. " +
+            "An empty answer response does not mean there are no web results.";
+
+          card.append(heading, paragraph);
+          results.append(card);
+          status.textContent =
+            `No Instant Answer returned for “${query}”.`;
+          return;
+        }
+
+        status.textContent = ambiguous
+          ? `“${query}” has multiple possible meanings.`
+          : `Topic answers and links for “${query}”.`;
+      }
+
+      async function search(query) {
+        if (busy || !query) return;
+
+        busy = true;
+        submit.disabled = true;
+        retry.hidden = true;
+        setWebSearch(query);
+        results.replaceChildren();
+        results.setAttribute("aria-busy", "true");
+        status.textContent = "Looking for topic answers…";
+
+        try {
+          const data = await requestAnswers(query);
+          renderAnswers(data, query);
+        } catch (error) {
+          status.textContent =
+            error.message || "Could not retrieve answers.";
+          retry.hidden = false;
+        } finally {
+          busy = false;
+          submit.disabled = false;
+          results.setAttribute("aria-busy", "false");
+        }
+      }
+
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+
+        const query = input.value.trim();
+        if (!query || busy) return;
+
+        input.value = query;
         updateAddress(query);
         search(query);
+      });
+
+      retry.addEventListener("click", () => {
+        const query = input.value.trim();
+        if (!query) return;
+
+        updateAddress(query);
+        search(query);
+      });
+
+      const initial = new URLSearchParams(location.search).get("q");
+
+      if (initial) {
+        input.value = initial.slice(0, 200).trim();
+
+        if (input.value) {
+          document.title = `${input.value} — EmberTail Answers`;
+          search(input.value);
+        }
       }
-    });
-
-    const initial = new URLSearchParams(location.search).get("q");
-
-    if (initial) {
-      input.value = initial.slice(0, 200).trim();
-
-      if (input.value) {
-        document.title = `${input.value} — EmberTail Answers`;
-        search(input.value);
-      }
-    }
+    })();
   </script>
 </body>
 </html>
