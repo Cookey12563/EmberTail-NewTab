@@ -388,7 +388,7 @@
         rel="noopener noreferrer"
         hidden
       >
-        Search the full web on DuckDuckGo ↗
+        Search the full web on Google ↗
       </a>
     </section>
 
@@ -455,12 +455,12 @@
     }
 
     function setWebSearch(query) {
-      const destination = new URL("https://duckduckgo.com/");
+      const destination = new URL("https://www.google.com/search");
       destination.searchParams.set("q", query);
 
       webSearch.href = destination.href;
       webSearch.hidden = false;
-    }
+}
 
     function updateAddress(query) {
       const url = new URL(location.href);
@@ -904,7 +904,7 @@
         heading.textContent = "No on-page answer found";
         paragraph.textContent =
           "Try a named topic or a broader term, or use " +
-          "“Search the full web on DuckDuckGo” above. " +
+          "“Search the full web on Google” above. " +
           "An empty answer response does not mean there are no web results.";
 
         card.append(heading, paragraph);
