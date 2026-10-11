@@ -1436,7 +1436,8 @@
         }
 
         status.textContent = ambiguous
-          ? `best answers for “${query}”.`;
+          ? `Possible meanings of “${query}”.`
+          : `Topic answers for “${query}”.`;
       }
 
       async function search(query) {
