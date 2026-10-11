@@ -1404,18 +1404,17 @@
           answerCount++;
         }
 
-        if (relatedCount) {
-          const section = createSection(
-            ambiguous
-              ? `Possible meanings of “${query}”`
-              : "Related topics",
-            ambiguous
-              ? "This term has multiple meanings. Choose the topic you meant."
-              : "Explore topics connected to your query."
-          );
-          addTopicGroups(section, relatedGroups);
-        }
-
+       if (relatedCount) {
+         const section = createSection(
+           ambiguous
+             ? `Which “${query}” are you looking for?`
+             : "Keep exploring",
+           ambiguous
+             ? "Pick the one you had in mind."
+             : "Here are a few more topics to check out."
+         );
+         addTopicGroups(section, relatedGroups);
+       }
         if (!answerCount && !directCount && !relatedCount) {
           const card = document.createElement("article");
           const heading = document.createElement("h2");
