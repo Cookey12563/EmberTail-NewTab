@@ -1431,13 +1431,12 @@
           card.append(heading, paragraph);
           results.append(card);
           status.textContent =
-            `No Instant Answer returned for “${query}”.`;
+            `404 no answer for “${query}”.`;
           return;
         }
 
         status.textContent = ambiguous
-          ? `“${query}” has multiple possible meanings.`
-          : `Topic answers and links for “${query}”.`;
+          ? `best answers for “${query}”.`;
       }
 
       async function search(query) {
