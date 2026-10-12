@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Ember Tail Browser</title>
-
   <link rel="icon" type="image/png" href="EMBERTAILFAV.PNG">
-
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
@@ -25,16 +23,10 @@
       --gold: #f5c95f;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
 
-    [hidden] {
-      display: none !important;
-    }
-
-    html,
-    body {
+    html, body {
       height: 100%;
       margin: 0;
     }
@@ -48,13 +40,9 @@
       font-family: "Open Sans", Arial, sans-serif;
     }
 
-    button,
-    input {
-      font: inherit;
-    }
+    button, input { font: inherit; }
 
-    button,
-    .outside {
+    button, .outside, .open-website {
       border: 1px solid #ffffff20;
       border-radius: 9px;
       padding: 8px 11px;
@@ -65,8 +53,7 @@
       white-space: nowrap;
     }
 
-    button:hover,
-    .outside:hover {
+    button:hover, .outside:hover, .open-website:hover {
       background: #414549;
     }
 
@@ -75,9 +62,7 @@
       cursor: default;
     }
 
-    button:focus-visible,
-    input:focus-visible,
-    a:focus-visible {
+    button:focus-visible, input:focus-visible, a:focus-visible {
       outline: 2px solid var(--gold);
       outline-offset: 2px;
     }
@@ -111,7 +96,7 @@
       min-width: 0;
       border: 1px solid #ffffff20;
       border-radius: 12px 12px 0 0;
-      background: #202225;
+      background: var(--input);
     }
 
     .tab.active {
@@ -140,7 +125,6 @@
     .toolbar {
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
       gap: 7px;
       padding: 10px;
     }
@@ -148,12 +132,11 @@
     .address-form {
       display: flex;
       flex: 1;
-      min-width: 180px;
-      gap: 6px;
+      min-width: 0;
     }
 
     .address {
-      flex: 1;
+      width: 100%;
       min-width: 0;
       padding: 9px 13px;
       border: 1px solid #ffffff35;
@@ -163,14 +146,25 @@
       font-size: 13px;
     }
 
+    .address::placeholder { color: #a9a9ad; }
+    .address:focus::placeholder { color: transparent; }
+
+    .star {
+      padding: 5px 10px;
+      font-size: 23px;
+      line-height: 1.25;
+      color: var(--gold);
+    }
+
     .bookmarks {
       display: flex;
       align-items: center;
       gap: 7px;
-      min-height: 40px;
       overflow-x: auto;
       padding: 0 10px 8px;
     }
+
+    .bookmarks:empty { display: none; }
 
     .bookmark {
       display: flex;
@@ -180,8 +174,7 @@
       background: var(--input);
     }
 
-    .bookmark-open,
-    .bookmark-delete {
+    .bookmark-open, .bookmark-delete {
       border: 0;
       background: transparent;
       font-size: 12px;
@@ -198,19 +191,15 @@
       color: var(--muted);
     }
 
-    .notice {
-      margin: 0;
-      padding: 7px 12px;
-      background: #202225;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.5;
-    }
-
     .views {
       position: relative;
       flex: 1;
       min-height: 0;
+    }
+
+    .view {
+      width: 100%;
+      height: 100%;
     }
 
     .page-frame {
@@ -218,120 +207,97 @@
       width: 100%;
       height: 100%;
       border: 0;
-      background: #17191b;
+      background: var(--background);
     }
 
-    dialog {
-      width: min(460px, calc(100vw - 32px));
+    .external-page, .closed-page {
+      display: grid;
+      place-items: center;
+      height: 100%;
       padding: 24px;
+      overflow: auto;
+      text-align: center;
+    }
+
+    .external-card {
+      width: min(500px, 100%);
+      padding: 30px;
       border: 2px solid var(--orange);
-      border-radius: 18px;
+      border-radius: 20px;
       background: var(--panel);
-      color: var(--cream);
-      line-height: 1.7;
     }
 
-    dialog::backdrop {
-      background: #0009;
-    }
-
-    dialog h2 {
+    .external-card h1 {
       margin-top: 0;
+      overflow-wrap: anywhere;
     }
 
-    dialog a {
-      color: var(--gold);
+    .external-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .open-website {
+      display: inline-block;
+      margin-top: 12px;
+      border-color: var(--orange);
     }
 
     @media (max-width: 600px) {
-      .tab {
-        flex-basis: 150px;
+      .tab { flex-basis: 150px; }
+      .toolbar { gap: 4px; padding: 8px; }
+
+      .toolbar > button {
+        padding: 7px;
       }
 
-      .address-form {
-        order: 1;
-        flex-basis: 100%;
-      }
-
-      .toolbar {
-        gap: 5px;
-      }
-
-      button,
       .outside {
-        padding: 7px 9px;
+        padding: 7px;
+        font-size: 11px;
+      }
+
+      .address {
         font-size: 12px;
+        padding: 9px;
       }
     }
   </style>
 </head>
 
 <body>
-  <header class="chrome">
+  <header id="chrome" class="chrome">
     <div class="tab-row">
       <div id="tabs" class="tabs" aria-label="Open tabs"></div>
-
-      <button
-        id="new-tab"
-        type="button"
-        aria-label="New tab"
-        title="New tab"
-      >＋</button>
+      <button id="new-tab" type="button" aria-label="New tab">＋</button>
     </div>
 
     <div class="toolbar">
-      <button
-        id="back"
-        type="button"
-        aria-label="Back"
-        title="Back"
-      >←</button>
-
-      <button
-        id="forward"
-        type="button"
-        aria-label="Forward"
-        title="Forward"
-      >→</button>
-
-      <button
-        id="reload"
-        type="button"
-        aria-label="Reload"
-        title="Reload"
-      >↻</button>
-
-      <button
-        id="home"
-        type="button"
-        aria-label="Ember Tail home"
-        title="Ember Tail home"
-      >🦊</button>
+      <button id="back" type="button" aria-label="Back" title="Back">←</button>
+      <button id="forward" type="button" aria-label="Forward" title="Forward">→</button>
+      <button id="reload" type="button" aria-label="Reload" title="Reload">↻</button>
+      <button id="home" type="button" aria-label="Home" title="Home">🏠</button>
 
       <form id="address-form" class="address-form">
         <input
           id="address"
           class="address"
           type="text"
-          aria-label="Website address or Ember Tail search"
-          placeholder="Enter a website or search Ember Tail"
+          aria-label="Search Ember Tail or type a URL"
+          placeholder="Search Ember Tail or type a URL"
           autocomplete="off"
           spellcheck="false"
           required
         >
-
-        <button type="submit">Go</button>
       </form>
 
       <button
         id="add-bookmark"
+        class="star"
         type="button"
+        aria-label="Bookmark this page"
         title="Bookmark this page"
-      >☆ Bookmark</button>
-
-      <button id="extensions" type="button">
-        🧩 Extensions
-      </button>
+      >☆</button>
 
       <a
         id="outside"
@@ -341,46 +307,16 @@
       >Open outside ↗</a>
     </div>
 
-    <nav
-      id="bookmarks"
-      class="bookmarks"
-      aria-label="Bookmarks"
-    ></nav>
-
-    <p id="notice" class="notice" role="status">
-      Websites that block embedding must be opened outside.
-    </p>
+    <nav id="bookmarks" class="bookmarks" aria-label="Bookmarks"></nav>
   </header>
 
   <main id="views" class="views" aria-label="Page viewport"></main>
-
-  <dialog id="extensions-dialog">
-    <h2>Extensions</h2>
-
-    <p>
-      This is an HTML browser-style app, not a separate browser engine.
-      It cannot install or run Chrome extensions.
-    </p>
-
-    <p>
-      Extensions installed in your actual browser are managed there.
-      This app does not bypass administrator restrictions.
-    </p>
-
-    <p>
-      A store for Ember Tail-specific features can be added later.
-      Those would not be Chrome extensions.
-    </p>
-
-    <form method="dialog">
-      <button type="submit">Close</button>
-    </form>
-  </dialog>
 
   <script>
     (() => {
       const homeURL = new URL("index.html", location.href).href;
       const searchURL = new URL("results.html", location.href).href;
+      const projectURL = new URL(".", homeURL);
       const bookmarkKey = "embertail-browser-bookmarks";
 
       const tabBar = document.getElementById("tabs");
@@ -389,49 +325,65 @@
       const back = document.getElementById("back");
       const forward = document.getElementById("forward");
       const outside = document.getElementById("outside");
+      const star = document.getElementById("add-bookmark");
       const bookmarkBar = document.getElementById("bookmarks");
-      const notice = document.getElementById("notice");
 
       const tabs = [];
       let activeId = null;
       let nextId = 0;
+      let bookmarks = [];
 
       function safeURL(value) {
         try {
           const url = new URL(value);
-
           if (["https:", "http:"].includes(url.protocol)) {
             return url.href;
           }
-
-          if (
-            location.protocol === "file:" &&
-            url.protocol === "file:"
-          ) {
+          if (location.protocol === "file:" && url.protocol === "file:") {
             return url.href;
           }
-        } catch {
-          // Ignore invalid addresses.
-        }
-
+        } catch {}
         return null;
       }
 
-      function titleFor(url) {
-        if (url === homeURL) return "Ember Tail";
+      function isHome(value) {
+        try {
+          const url = new URL(value);
+          const home = new URL(homeURL);
+          return (
+            url.origin === home.origin &&
+            url.pathname === home.pathname &&
+            url.search === ""
+          );
+        } catch {
+          return false;
+        }
+      }
+
+      function isProjectPage(value) {
+        try {
+          const url = new URL(value);
+          return (
+            url.protocol === projectURL.protocol &&
+            url.host === projectURL.host &&
+            url.pathname.startsWith(projectURL.pathname) &&
+            !url.pathname.endsWith("/browser.html")
+          );
+        } catch {
+          return false;
+        }
+      }
+
+      function titleFor(value) {
+        if (isHome(value)) return "Ember Tail";
 
         try {
-          const parsed = new URL(url);
-
-          if (
-            parsed.origin === new URL(searchURL).origin &&
-            parsed.pathname === new URL(searchURL).pathname
-          ) {
-            const query = parsed.searchParams.get("q");
+          const url = new URL(value);
+          if (isProjectPage(value) && url.pathname.endsWith("/results.html")) {
+            const query = url.searchParams.get("q");
             return query ? `${query} - Ember Tail` : "Ember Tail";
           }
-
-          return parsed.hostname || "Local page";
+          return url.hostname || "Local page";
         } catch {
           return "Page";
         }
@@ -445,23 +397,42 @@
         return tab.history[tab.position];
       }
 
+      function bookmarkIndex(url) {
+        return bookmarks.findIndex(bookmark => bookmark.url === url);
+      }
+
+      function refreshToolbar() {
+        const tab = activeTab();
+        if (!tab) return;
+
+        const url = currentURL(tab);
+        address.value = isHome(url) ? "" : url;
+        outside.href = url;
+        back.disabled = tab.position === 0;
+        forward.disabled = tab.position === tab.history.length - 1;
+
+        const saved = bookmarkIndex(url) >= 0;
+        star.textContent = saved ? "★" : "☆";
+        star.title = saved ? "Remove bookmark" : "Bookmark this page";
+        star.setAttribute("aria-label", star.title);
+        star.setAttribute("aria-pressed", String(saved));
+
+        document.title = `${tab.title} - Ember Tail Browser`;
+      }
+
       function renderTabs() {
         tabBar.replaceChildren();
 
         for (const tab of tabs) {
           const wrapper = document.createElement("div");
-          wrapper.className =
-            "tab" + (tab.id === activeId ? " active" : "");
+          wrapper.className = "tab" + (tab.id === activeId ? " active" : "");
 
           const select = document.createElement("button");
           select.type = "button";
           select.className = "tab-select";
           select.textContent = tab.title;
           select.title = tab.title;
-          select.setAttribute(
-            "aria-pressed",
-            String(tab.id === activeId)
-          );
+          select.setAttribute("aria-pressed", String(tab.id === activeId));
           select.onclick = () => selectTab(tab.id);
 
           const close = document.createElement("button");
@@ -476,122 +447,187 @@
         }
       }
 
-      function refreshToolbar() {
-        const tab = activeTab();
-        if (!tab) return;
-
-        address.value = currentURL(tab);
-        outside.href = currentURL(tab);
-        back.disabled = tab.position === 0;
-        forward.disabled = tab.position === tab.history.length - 1;
-        document.title = `${tab.title} - Ember Tail Browser`;
-
-        notice.textContent =
-          "Websites that block embedding must be opened outside. " +
-          "Back/forward tracks toolbar visits and readable Ember Tail pages.";
-      }
-
       function selectTab(id) {
         activeId = id;
-
         for (const tab of tabs) {
-          tab.frame.hidden = tab.id !== id;
+          tab.view.hidden = tab.id !== id;
         }
-
         renderTabs();
         refreshToolbar();
       }
 
       function recordVisit(tab, url) {
         if (url === currentURL(tab)) return;
-
         tab.history = tab.history.slice(0, tab.position + 1);
         tab.history.push(url);
         tab.position = tab.history.length - 1;
       }
 
+      function interceptProjectLinks(tab, frame) {
+        try {
+          const doc = frame.contentDocument;
+          if (!doc) return;
+
+          doc.addEventListener("click", event => {
+            if (event.defaultPrevented || event.button !== 0) return;
+
+            const link = event.target.closest?.("a[href]");
+            if (!link || link.hasAttribute("download")) return;
+
+            const url = safeURL(link.href);
+            if (!url) return;
+
+            event.preventDefault();
+
+            if (
+              event.ctrlKey ||
+              event.metaKey ||
+              event.shiftKey ||
+              link.target === "_blank"
+            ) {
+              createTab(url);
+            } else {
+              navigate(tab, url);
+            }
+          });
+        } catch {}
+      }
+
+      function displayPage(tab) {
+        const url = currentURL(tab);
+        tab.title = titleFor(url);
+        tab.view.replaceChildren();
+        tab.frame = null;
+
+        if (isProjectPage(url)) {
+          const frame = document.createElement("iframe");
+          frame.className = "page-frame";
+          frame.title = "Ember Tail page";
+          frame.referrerPolicy = "strict-origin-when-cross-origin";
+          frame.setAttribute(
+            "sandbox",
+            "allow-scripts allow-same-origin allow-forms " +
+            "allow-popups allow-popups-to-escape-sandbox allow-downloads"
+          );
+
+          tab.frame = frame;
+
+          frame.addEventListener("load", () => {
+            if (!tabs.includes(tab) || tab.frame !== frame) return;
+
+            try {
+              const loaded = safeURL(frame.contentWindow.location.href);
+
+              if (loaded && loaded !== "about:blank") {
+                recordVisit(tab, loaded);
+                tab.title = frame.contentDocument.title || titleFor(loaded);
+                interceptProjectLinks(tab, frame);
+              }
+            } catch {}
+
+            renderTabs();
+            if (tab.id === activeId) refreshToolbar();
+          });
+
+          tab.view.append(frame);
+          frame.src = url;
+        } else {
+          const page = document.createElement("section");
+          page.className = "external-page";
+
+          const card = document.createElement("div");
+          card.className = "external-card";
+
+          const heading = document.createElement("h1");
+          heading.textContent = titleFor(url);
+
+          const destination = document.createElement("p");
+          destination.textContent = url;
+
+          const explanation = document.createElement("p");
+          explanation.textContent =
+            "Open this website in your browser. External websites " +
+            "are not embedded inside Ember Tail.";
+
+          const open = document.createElement("a");
+          open.className = "open-website";
+          open.href = url;
+          open.target = "_blank";
+          open.rel = "noopener noreferrer";
+          open.textContent = "Open website ↗";
+
+          card.append(heading, destination, explanation, open);
+          page.append(card);
+          tab.view.append(page);
+        }
+
+        renderTabs();
+        if (tab.id === activeId) refreshToolbar();
+      }
+
       function navigate(tab, url) {
         const destination = safeURL(url);
         if (!tab || !destination) return;
-
         recordVisit(tab, destination);
-        tab.title = titleFor(destination);
-        tab.frame.src = destination;
-
-        renderTabs();
-
-        if (tab.id === activeId) {
-          refreshToolbar();
-        }
+        displayPage(tab);
       }
 
       function createTab(url = homeURL) {
-        const frame = document.createElement("iframe");
+        const destination = safeURL(url);
+        if (!destination) return;
 
-        frame.className = "page-frame";
-        frame.title = "Embedded page";
-        frame.referrerPolicy = "strict-origin-when-cross-origin";
-
-        frame.setAttribute(
-          "sandbox",
-          "allow-scripts allow-same-origin allow-forms " +
-          "allow-popups allow-popups-to-escape-sandbox allow-downloads"
-        );
+        const view = document.createElement("div");
+        view.className = "view";
 
         const tab = {
           id: ++nextId,
-          title: titleFor(url),
-          history: [url],
+          title: titleFor(destination),
+          history: [destination],
           position: 0,
-          frame
+          view,
+          frame: null
         };
 
-        frame.addEventListener("load", () => {
-          if (!tabs.includes(tab)) return;
-
-          try {
-            const loadedURL = frame.contentWindow.location.href;
-
-            if (loadedURL !== "about:blank") {
-              const destination = safeURL(loadedURL);
-
-              if (destination) {
-                recordVisit(tab, destination);
-
-                tab.title =
-                  frame.contentDocument.title ||
-                  titleFor(destination);
-              }
-            }
-          } catch {
-            // Other origins cannot be inspected by this page.
-          }
-
-          renderTabs();
-
-          if (tab.id === activeId) {
-            refreshToolbar();
-          }
-        });
-
         tabs.push(tab);
-        views.append(frame);
-        frame.src = url;
+        views.append(view);
         selectTab(tab.id);
+        displayPage(tab);
       }
 
       function closeTab(id) {
         const index = tabs.findIndex(tab => tab.id === id);
         if (index < 0) return;
 
-        const wasActive = id === activeId;
-        tabs[index].frame.remove();
-        tabs.splice(index, 1);
+        if (tabs.length === 1) {
+          tabs[0].view.remove();
+          tabs.splice(0);
+          activeId = null;
 
-        if (!tabs.length) {
-          createTab();
+          document.getElementById("chrome").hidden = true;
+          document.title = "Ember Tail closed";
+
+          const page = document.createElement("section");
+          page.className = "closed-page";
+
+          const message = document.createElement("div");
+          const heading = document.createElement("h1");
+          heading.textContent = "Ember Tail closed";
+
+          const note = document.createElement("p");
+          note.textContent =
+            "If this window stayed open, close it using your browser.";
+
+          message.append(heading, note);
+          page.append(message);
+          views.replaceChildren(page);
+
+          window.close();
           return;
         }
+
+        const wasActive = id === activeId;
+        tabs[index].view.remove();
+        tabs.splice(index, 1);
 
         if (wasActive) {
           selectTab(tabs[Math.min(index, tabs.length - 1)].id);
@@ -605,46 +641,33 @@
         if (!tab) return;
 
         const next = tab.position + direction;
-
         if (next < 0 || next >= tab.history.length) return;
 
         tab.position = next;
-        tab.title = titleFor(currentURL(tab));
-        tab.frame.src = currentURL(tab);
-
-        renderTabs();
-        refreshToolbar();
+        displayPage(tab);
       }
 
       function resolveAddress(value) {
         const text = value.trim();
-
         if (!text) return null;
 
-        if (/^https?:\/\//i.test(text)) {
-          return safeURL(text);
-        }
-
-        if (/^file:\/\//i.test(text)) {
+        if (/^https?:\/\//i.test(text) || /^file:\/\//i.test(text)) {
           return safeURL(text);
         }
 
         if (
           !/\s/.test(text) &&
-          /^(localhost(?::\d+)?|(?:[a-z0-9-]+\.)+[a-z]{2,})(?:[/:?#]|$)/i
-            .test(text)
+          /^(localhost(?::\d+)?|(?:[a-z0-9-]+\.)+[a-z]{2,})(?:[/:?#]|$)/i.test(text)
         ) {
-          return safeURL(`https://${text}`);
+          return safeURL(
+            `${/^localhost(?::|\/|$)/i.test(text) ? "http" : "https"}://${text}`
+          );
         }
 
         const destination = new URL(searchURL);
         destination.searchParams.set("q", text);
         return destination.href;
       }
-
-      let bookmarks = [
-        { name: "🦊 Ember Tail", url: homeURL }
-      ];
 
       try {
         const saved = JSON.parse(localStorage.getItem(bookmarkKey));
@@ -662,29 +685,16 @@
               url: safeURL(item.url)
             }));
         }
-      } catch {
-        // Default bookmark remains if storage is unavailable.
-      }
+      } catch {}
 
       function saveBookmarks() {
         try {
           localStorage.setItem(bookmarkKey, JSON.stringify(bookmarks));
-        } catch {
-          notice.textContent =
-            "Bookmarks work here, but browser storage is unavailable.";
-        }
+        } catch {}
       }
 
       function renderBookmarks() {
         bookmarkBar.replaceChildren();
-
-        if (!bookmarks.length) {
-          const label = document.createElement("span");
-          label.textContent = "Use ☆ Bookmark to add a page.";
-          label.style.fontSize = "12px";
-          bookmarkBar.append(label);
-          return;
-        }
 
         bookmarks.forEach((bookmark, index) => {
           const wrapper = document.createElement("div");
@@ -695,24 +705,19 @@
           open.className = "bookmark-open";
           open.textContent = bookmark.name;
           open.title = bookmark.url;
-
-          open.onclick = () => {
-            navigate(activeTab(), bookmark.url);
-          };
+          open.onclick = () => navigate(activeTab(), bookmark.url);
 
           const remove = document.createElement("button");
           remove.type = "button";
           remove.className = "bookmark-delete";
           remove.textContent = "×";
-          remove.setAttribute(
-            "aria-label",
-            `Remove bookmark ${bookmark.name}`
-          );
+          remove.setAttribute("aria-label", `Remove bookmark ${bookmark.name}`);
 
           remove.onclick = () => {
             bookmarks.splice(index, 1);
             renderBookmarks();
             saveBookmarks();
+            refreshToolbar();
           };
 
           wrapper.append(open, remove);
@@ -723,21 +728,11 @@
       document.getElementById("address-form")
         .addEventListener("submit", event => {
           event.preventDefault();
-
           const destination = resolveAddress(address.value);
-
-          if (destination) {
-            navigate(activeTab(), destination);
-          } else {
-            notice.textContent =
-              "Enter a valid HTTP/HTTPS address or a search topic.";
-          }
+          if (destination) navigate(activeTab(), destination);
         });
 
-      document.getElementById("new-tab").onclick = () => {
-        createTab();
-      };
-
+      document.getElementById("new-tab").onclick = () => createTab();
       back.onclick = () => travel(-1);
       forward.onclick = () => travel(1);
 
@@ -745,10 +740,14 @@
         const tab = activeTab();
         if (!tab) return;
 
-        try {
-          tab.frame.contentWindow.location.reload();
-        } catch {
-          tab.frame.src = currentURL(tab);
+        if (tab.frame) {
+          try {
+            tab.frame.contentWindow.location.reload();
+          } catch {
+            displayPage(tab);
+          }
+        } else {
+          displayPage(tab);
         }
       };
 
@@ -756,25 +755,28 @@
         navigate(activeTab(), homeURL);
       };
 
-      document.getElementById("add-bookmark").onclick = () => {
+      star.onclick = () => {
         const tab = activeTab();
         if (!tab) return;
 
-        const name = prompt("Bookmark name:", tab.title);
+        const url = currentURL(tab);
+        const index = bookmarkIndex(url);
 
-        if (name === null || !name.trim()) return;
+        if (index >= 0) {
+          bookmarks.splice(index, 1);
+        } else {
+          const name = prompt("Bookmark name:", tab.title);
+          if (name === null || !name.trim()) return;
 
-        bookmarks.push({
-          name: name.trim().slice(0, 100),
-          url: currentURL(tab)
-        });
+          bookmarks.push({
+            name: name.trim().slice(0, 100),
+            url
+          });
+        }
 
         renderBookmarks();
         saveBookmarks();
-      };
-
-      document.getElementById("extensions").onclick = () => {
-        document.getElementById("extensions-dialog").showModal();
+        refreshToolbar();
       };
 
       renderBookmarks();
