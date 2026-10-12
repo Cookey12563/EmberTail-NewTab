@@ -922,7 +922,93 @@
                         return null;
                     }
                 }
+function relevanceWords(value) {
+    const stopWords = new Set([
+        "a", "an", "the", "and", "or", "but",
+        "is", "are", "was", "were", "be", "been",
+        "to", "of", "in", "on", "at", "for", "from",
+        "with", "by", "as", "it", "its",
+        "i", "me", "my", "you", "your",
+        "what", "which", "who", "when", "where",
+        "why", "how", "do", "does", "did",
+        "can", "could", "would", "should",
+        "about", "please", "no", "yes"
+    ]);
 
+    const words = String(value || "")
+        .normalize("NFKC")
+        .toLowerCase()
+        .match(/[\p{L}\p{N}]+/gu) || [];
+
+    return [...new Set(
+        words
+            .filter(word => !stopWords.has(word))
+            .map(word => {
+                // Basic plural handling, not semantic understanding.
+                if (word === "foxes") return "fox";
+                return word;
+            })
+    )];
+}
+
+function filterCollection(data, searchQuery) {
+    if (!Array.isArray(data.results)) {
+        throw new Error("Unexpected collection response.");
+    }
+
+    const queryWords = relevanceWords(searchQuery);
+
+    // No meaningful query terms: display no collection results.
+    if (!queryWords.length) {
+        return { results: [], overview: null };
+    }
+
+    const results = data.results.filter(page => {
+        if (!page || !link(page.url, "")) return false;
+
+        // Match titles and excerpts, not incidental words in URLs.
+        const pageWords = new Set(relevanceWords(
+            `${typeof page.title === "string" ? page.title : ""} ${
+                typeof page.description === "string"
+                    ? page.description
+                    : ""
+            }`
+        ));
+
+        // Conservative rule: every meaningful query term must match.
+        return queryWords.every(word => pageWords.has(word));
+    });
+
+    const normalizeURL = value => {
+        try {
+            return new URL(value).href;
+        } catch {
+            return null;
+        }
+    };
+
+    const acceptedURLs = new Set(
+        results.map(page => normalizeURL(page.url)).filter(Boolean)
+    );
+
+    const sources = Array.isArray(data.overview?.sources)
+        ? data.overview.sources
+        : [];
+
+    // Don't keep an overview based on rejected or unidentified sources.
+    const overviewSupported =
+        results.length > 0 &&
+        sources.length > 0 &&
+        sources.every(source =>
+            source &&
+            acceptedURLs.has(normalizeURL(source.url))
+        );
+
+    return {
+        results,
+        overview: overviewSupported ? data.overview : null
+    };
+}
                 function renderOverview(data) {
                     if (hidden || typeof data?.text !== "string" || !data.text.trim()) return;
                     const card = document.createElement("section");
