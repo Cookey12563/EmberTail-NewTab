@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Ember Tail Browser</title>
+
+  <link rel="icon" type="image/png" href="EMBERTAILFAV.PNG">
+
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+  >
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #17191b;
+      --panel: #2d3033;
+      --input: #202225;
+      --cream: #fff3df;
+      --muted: #c7beb1;
+      --orange: #e77a32;
+      --gold: #f5c95f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--background);
+      color: var(--cream);
+      font-family: "Open Sans", Arial, sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button,
+    .outside {
+      border: 1px solid #ffffff20;
+      border-radius: 9px;
+      padding: 8px 11px;
+      background: var(--input);
+      color: var(--cream);
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    button:hover,
+    .outside:hover {
+      background: #414549;
+    }
+
+    button:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    .chrome {
+      flex-shrink: 0;
+      background: var(--panel);
+      border-bottom: 2px solid var(--orange);
+    }
+
+    .tab-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 10px 0;
+    }
+
+    .tabs {
+      display: flex;
+      flex: 1;
+      gap: 6px;
+      min-width: 0;
+      overflow-x: auto;
+      padding: 2px;
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      flex: 0 0 190px;
+      min-width: 0;
+      border: 1px solid #ffffff20;
+      border-radius: 12px 12px 0 0;
+      background: #202225;
+    }
+
+    .tab.active {
+      border-color: var(--orange);
+      background: #414549;
+    }
+
+    .tab-select {
+      flex: 1;
+      overflow: hidden;
+      padding: 10px;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      text-overflow: ellipsis;
+      font-size: 12px;
+    }
+
+    .tab-close {
+      margin-right: 4px;
+      padding: 4px 8px;
+      border: 0;
+      background: transparent;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      padding: 10px;
+    }
+
+    .address-form {
+      display: flex;
+      flex: 1;
+      min-width: 180px;
+      gap: 6px;
+    }
+
+    .address {
+      flex: 1;
+      min-width: 0;
+      padding: 9px 13px;
+      border: 1px solid #ffffff35;
+      border-radius: 999px;
+      background: var(--background);
+      color: var(--cream);
+      font-size: 13px;
+    }
+
+    .bookmarks {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 40px;
+      overflow-x: auto;
+      padding: 0 10px 8px;
+    }
+
+    .bookmark {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      border-radius: 8px;
+      background: var(--input);
+    }
+
+    .bookmark-open,
+    .bookmark-delete {
+      border: 0;
+      background: transparent;
+      font-size: 12px;
+    }
+
+    .bookmark-open {
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bookmark-delete {
+      padding: 5px 7px;
+      color: var(--muted);
+    }
+
+    .notice {
+      margin: 0;
+      padding: 7px 12px;
+      background: #202225;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .views {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .page-frame {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #17191b;
+    }
+
+    dialog {
+      width: min(460px, calc(100vw - 32px));
+      padding: 24px;
+      border: 2px solid var(--orange);
+      border-radius: 18px;
+      background: var(--panel);
+      color: var(--cream);
+      line-height: 1.7;
+    }
+
+    dialog::backdrop {
+      background: #0009;
+    }
+
+    dialog h2 {
+      margin-top: 0;
+    }
+
+    dialog a {
+      color: var(--gold);
+    }
+
+    @media (max-width: 600px) {
+      .tab {
+        flex-basis: 150px;
+      }
+
+      .address-form {
+        order: 1;
+        flex-basis: 100%;
+      }
+
+      .toolbar {
+        gap: 5px;
+      }
+
+      button,
+      .outside {
+        padding: 7px 9px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="chrome">
+    <div class="tab-row">
+      <div id="tabs" class="tabs" aria-label="Open tabs"></div>
+
+      <button
+        id="new-tab"
+        type="button"
+        aria-label="New tab"
+        title="New tab"
+      >＋</button>
+    </div>
+
+    <div class="toolbar">
+      <button
+        id="back"
+        type="button"
+        aria-label="Back"
+        title="Back"
+      >←</button>
+
+      <button
+        id="forward"
+        type="button"
+        aria-label="Forward"
+        title="Forward"
+      >→</button>
+
+      <button
+        id="reload"
+        type="button"
+        aria-label="Reload"
+        title="Reload"
+      >↻</button>
+
+      <button
+        id="home"
+        type="button"
+        aria-label="Ember Tail home"
+        title="Ember Tail home"
+      >🦊</button>
+
+      <form id="address-form" class="address-form">
+        <input
+          id="address"
+          class="address"
+          type="text"
+          aria-label="Website address or Ember Tail search"
+          placeholder="Enter a website or search Ember Tail"
+          autocomplete="off"
+          spellcheck="false"
+          required
+        >
+
+        <button type="submit">Go</button>
+      </form>
+
+      <button
+        id="add-bookmark"
+        type="button"
+        title="Bookmark this page"
+      >☆ Bookmark</button>
+
+      <button id="extensions" type="button">
+        🧩 Extensions
+      </button>
+
+      <a
+        id="outside"
+        class="outside"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Open outside ↗</a>
+    </div>
+
+    <nav
+      id="bookmarks"
+      class="bookmarks"
+      aria-label="Bookmarks"
+    ></nav>
+
+    <p id="notice" class="notice" role="status">
+      Websites that block embedding must be opened outside.
+    </p>
+  </header>
+
+  <main id="views" class="views" aria-label="Page viewport"></main>
+
+  <dialog id="extensions-dialog">
+    <h2>Extensions</h2>
+
+    <p>
+      This is an HTML browser-style app, not a separate browser engine.
+      It cannot install or run Chrome extensions.
+    </p>
+
+    <p>
+      Extensions installed in your actual browser are managed there.
+      This app does not bypass administrator restrictions.
+    </p>
+
+    <p>
+      A store for Ember Tail-specific features can be added later.
+      Those would not be Chrome extensions.
+    </p>
+
+    <form method="dialog">
+      <button type="submit">Close</button>
+    </form>
+  </dialog>
+
+  <script>
+    (() => {
+      const homeURL = new URL("index.html", location.href).href;
+      const searchURL = new URL("results.html", location.href).href;
+      const bookmarkKey = "embertail-browser-bookmarks";
+
+      const tabBar = document.getElementById("tabs");
+      const views = document.getElementById("views");
+      const address = document.getElementById("address");
+      const back = document.getElementById("back");
+      const forward = document.getElementById("forward");
+      const outside = document.getElementById("outside");
+      const bookmarkBar = document.getElementById("bookmarks");
+      const notice = document.getElementById("notice");
+
+      const tabs = [];
+      let activeId = null;
+      let nextId = 0;
+
+      function safeURL(value) {
+        try {
+          const url = new URL(value);
+
+          if (["https:", "http:"].includes(url.protocol)) {
+            return url.href;
+          }
+
+          if (
+            location.protocol === "file:" &&
+            url.protocol === "file:"
+          ) {
+            return url.href;
+          }
+        } catch {
+          // Ignore invalid addresses.
+        }
+
+        return null;
+      }
+
+      function titleFor(url) {
+        if (url === homeURL) return "Ember Tail";
+
+        try {
+          const parsed = new URL(url);
+
+          if (
+            parsed.origin === new URL(searchURL).origin &&
+            parsed.pathname === new URL(searchURL).pathname
+          ) {
+            const query = parsed.searchParams.get("q");
+            return query ? `${query} - Ember Tail` : "Ember Tail";
+          }
+
+          return parsed.hostname || "Local page";
+        } catch {
+          return "Page";
+        }
+      }
+
+      function activeTab() {
+        return tabs.find(tab => tab.id === activeId);
+      }
+
+      function currentURL(tab) {
+        return tab.history[tab.position];
+      }
+
+      function renderTabs() {
+        tabBar.replaceChildren();
+
+        for (const tab of tabs) {
+          const wrapper = document.createElement("div");
+          wrapper.className =
+            "tab" + (tab.id === activeId ? " active" : "");
+
+          const select = document.createElement("button");
+          select.type = "button";
+          select.className = "tab-select";
+          select.textContent = tab.title;
+          select.title = tab.title;
+          select.setAttribute(
+            "aria-pressed",
+            String(tab.id === activeId)
+          );
+          select.onclick = () => selectTab(tab.id);
+
+          const close = document.createElement("button");
+          close.type = "button";
+          close.className = "tab-close";
+          close.textContent = "×";
+          close.setAttribute("aria-label", `Close ${tab.title}`);
+          close.onclick = () => closeTab(tab.id);
+
+          wrapper.append(select, close);
+          tabBar.append(wrapper);
+        }
+      }
+
+      function refreshToolbar() {
+        const tab = activeTab();
+        if (!tab) return;
+
+        address.value = currentURL(tab);
+        outside.href = currentURL(tab);
+        back.disabled = tab.position === 0;
+        forward.disabled = tab.position === tab.history.length - 1;
+        document.title = `${tab.title} - Ember Tail Browser`;
+
+        notice.textContent =
+          "Websites that block embedding must be opened outside. " +
+          "Back/forward tracks toolbar visits and readable Ember Tail pages.";
+      }
+
+      function selectTab(id) {
+        activeId = id;
+
+        for (const tab of tabs) {
+          tab.frame.hidden = tab.id !== id;
+        }
+
+        renderTabs();
+        refreshToolbar();
+      }
+
+      function recordVisit(tab, url) {
+        if (url === currentURL(tab)) return;
+
+        tab.history = tab.history.slice(0, tab.position + 1);
+        tab.history.push(url);
+        tab.position = tab.history.length - 1;
+      }
+
+      function navigate(tab, url) {
+        const destination = safeURL(url);
+        if (!tab || !destination) return;
+
+        recordVisit(tab, destination);
+        tab.title = titleFor(destination);
+        tab.frame.src = destination;
+
+        renderTabs();
+
+        if (tab.id === activeId) {
+          refreshToolbar();
+        }
+      }
+
+      function createTab(url = homeURL) {
+        const frame = document.createElement("iframe");
+
+        frame.className = "page-frame";
+        frame.title = "Embedded page";
+        frame.referrerPolicy = "strict-origin-when-cross-origin";
+
+        frame.setAttribute(
+          "sandbox",
+          "allow-scripts allow-same-origin allow-forms " +
+          "allow-popups allow-popups-to-escape-sandbox allow-downloads"
+        );
+
+        const tab = {
+          id: ++nextId,
+          title: titleFor(url),
+          history: [url],
+          position: 0,
+          frame
+        };
+
+        frame.addEventListener("load", () => {
+          if (!tabs.includes(tab)) return;
+
+          try {
+            const loadedURL = frame.contentWindow.location.href;
+
+            if (loadedURL !== "about:blank") {
+              const destination = safeURL(loadedURL);
+
+              if (destination) {
+                recordVisit(tab, destination);
+
+                tab.title =
+                  frame.contentDocument.title ||
+                  titleFor(destination);
+              }
+            }
+          } catch {
+            // Other origins cannot be inspected by this page.
+          }
+
+          renderTabs();
+
+          if (tab.id === activeId) {
+            refreshToolbar();
+          }
+        });
+
+        tabs.push(tab);
+        views.append(frame);
+        frame.src = url;
+        selectTab(tab.id);
+      }
+
+      function closeTab(id) {
+        const index = tabs.findIndex(tab => tab.id === id);
+        if (index < 0) return;
+
+        const wasActive = id === activeId;
+        tabs[index].frame.remove();
+        tabs.splice(index, 1);
+
+        if (!tabs.length) {
+          createTab();
+          return;
+        }
+
+        if (wasActive) {
+          selectTab(tabs[Math.min(index, tabs.length - 1)].id);
+        } else {
+          renderTabs();
+        }
+      }
+
+      function travel(direction) {
+        const tab = activeTab();
+        if (!tab) return;
+
+        const next = tab.position + direction;
+
+        if (next < 0 || next >= tab.history.length) return;
+
+        tab.position = next;
+        tab.title = titleFor(currentURL(tab));
+        tab.frame.src = currentURL(tab);
+
+        renderTabs();
+        refreshToolbar();
+      }
+
+      function resolveAddress(value) {
+        const text = value.trim();
+
+        if (!text) return null;
+
+        if (/^https?:\/\//i.test(text)) {
+          return safeURL(text);
+        }
+
+        if (/^file:\/\//i.test(text)) {
+          return safeURL(text);
+        }
+
+        if (
+          !/\s/.test(text) &&
+          /^(localhost(?::\d+)?|(?:[a-z0-9-]+\.)+[a-z]{2,})(?:[/:?#]|$)/i
+            .test(text)
+        ) {
+          return safeURL(`https://${text}`);
+        }
+
+        const destination = new URL(searchURL);
+        destination.searchParams.set("q", text);
+        return destination.href;
+      }
+
+      let bookmarks = [
+        { name: "🦊 Ember Tail", url: homeURL }
+      ];
+
+      try {
+        const saved = JSON.parse(localStorage.getItem(bookmarkKey));
+
+        if (Array.isArray(saved)) {
+          bookmarks = saved
+            .filter(item =>
+              item &&
+              typeof item.name === "string" &&
+              typeof item.url === "string" &&
+              safeURL(item.url)
+            )
+            .map(item => ({
+              name: item.name.slice(0, 100),
+              url: safeURL(item.url)
+            }));
+        }
+      } catch {
+        // Default bookmark remains if storage is unavailable.
+      }
+
+      function saveBookmarks() {
+        try {
+          localStorage.setItem(bookmarkKey, JSON.stringify(bookmarks));
+        } catch {
+          notice.textContent =
+            "Bookmarks work here, but browser storage is unavailable.";
+        }
+      }
+
+      function renderBookmarks() {
+        bookmarkBar.replaceChildren();
+
+        if (!bookmarks.length) {
+          const label = document.createElement("span");
+          label.textContent = "Use ☆ Bookmark to add a page.";
+          label.style.fontSize = "12px";
+          bookmarkBar.append(label);
+          return;
+        }
+
+        bookmarks.forEach((bookmark, index) => {
+          const wrapper = document.createElement("div");
+          wrapper.className = "bookmark";
+
+          const open = document.createElement("button");
+          open.type = "button";
+          open.className = "bookmark-open";
+          open.textContent = bookmark.name;
+          open.title = bookmark.url;
+
+          open.onclick = () => {
+            navigate(activeTab(), bookmark.url);
+          };
+
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "bookmark-delete";
+          remove.textContent = "×";
+          remove.setAttribute(
+            "aria-label",
+            `Remove bookmark ${bookmark.name}`
+          );
+
+          remove.onclick = () => {
+            bookmarks.splice(index, 1);
+            renderBookmarks();
+            saveBookmarks();
+          };
+
+          wrapper.append(open, remove);
+          bookmarkBar.append(wrapper);
+        });
+      }
+
+      document.getElementById("address-form")
+        .addEventListener("submit", event => {
+          event.preventDefault();
+
+          const destination = resolveAddress(address.value);
+
+          if (destination) {
+            navigate(activeTab(), destination);
+          } else {
+            notice.textContent =
+              "Enter a valid HTTP/HTTPS address or a search topic.";
+          }
+        });
+
+      document.getElementById("new-tab").onclick = () => {
+        createTab();
+      };
+
+      back.onclick = () => travel(-1);
+      forward.onclick = () => travel(1);
+
+      document.getElementById("reload").onclick = () => {
+        const tab = activeTab();
+        if (!tab) return;
+
+        try {
+          tab.frame.contentWindow.location.reload();
+        } catch {
+          tab.frame.src = currentURL(tab);
+        }
+      };
+
+      document.getElementById("home").onclick = () => {
+        navigate(activeTab(), homeURL);
+      };
+
+      document.getElementById("add-bookmark").onclick = () => {
+        const tab = activeTab();
+        if (!tab) return;
+
+        const name = prompt("Bookmark name:", tab.title);
+
+        if (name === null || !name.trim()) return;
+
+        bookmarks.push({
+          name: name.trim().slice(0, 100),
+          url: currentURL(tab)
+        });
+
+        renderBookmarks();
+        saveBookmarks();
+      };
+
+      document.getElementById("extensions").onclick = () => {
+        document.getElementById("extensions-dialog").showModal();
+      };
+
+      renderBookmarks();
+      createTab();
+    })();
+  </script>
+</body>
+</html>
